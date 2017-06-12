@@ -1,0 +1,1376 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for fabric-client/lib/impl/CryptoSuite_ECDSA_AES.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">fabric-client/lib/impl/</a> CryptoSuite_ECDSA_AES.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">84.34% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>140/166</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">80.22% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>73/91</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">75% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>12/16</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">84.34% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>140/166</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47×</span>
+<span class="cline-any cline-yes">47×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47×</span>
+<span class="cline-any cline-yes">40×</span>
+<span class="cline-any cline-yes">40×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * Copyright 2016 IBM All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+&nbsp;
+'use strict';
+&nbsp;
+// requires
+var api = require('../api.js');
+&nbsp;
+var crypto = require('crypto');
+var elliptic = require('elliptic');
+var EC = elliptic.ec;
+var jsrsa = require('jsrsasign');
+var KEYUTIL = jsrsa.KEYUTIL;
+var util = require('util');
+var BN = require('bn.js');
+var Signature = require('elliptic/lib/elliptic/ec/signature.js');
+&nbsp;
+var hashPrimitives = require('../hash.js');
+var utils = require('../utils');
+var ECDSAKey = require('./ecdsa/key.js');
+&nbsp;
+var logger = utils.getLogger('crypto_ecdsa_aes');
+&nbsp;
+/**
+ * The {@link module:api.CryptoSuite} implementation for ECDSA, and AES algorithms using software key generation.
+ * This class implements a software-based key generation (as opposed to Hardware Security Module based key management)
+ *
+ * @class
+ */
+var CryptoSuite_ECDSA_AES = class extends api.CryptoSuite {
+&nbsp;
+	/**
+	 * constructor
+	 *
+	 * @param {number} keySize Key size for the ECDSA algorithm, can only be 256 or 384
+	 * @param {string} hash Optional. Hash algorithm, supported values are "SHA2" and "SHA3"
+	 */
+	constructor(keySize, hash) {
+		logger.debug('constructor, keySize: '+keySize);
+		super();
+&nbsp;
+		if (keySize !== 256 &amp;&amp; keySize !== 384) {
+			throw new Error('Illegal key size: ' + keySize + ' - this crypto suite only supports key sizes 256 or 384');
+		}
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (typeof hash === 'string' &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >hash !== null </span>&amp;&amp; <span class="branch-2 cbranch-no" title="branch not covered" >hash !== '')</span> {
+<span class="cstat-no" title="statement not covered" >			this._hashAlgo = hash;</span>
+		} else {
+			this._hashAlgo = utils.getConfigSetting('crypto-hash-algo');
+		}
+		this._keySize = keySize;
+		this._cryptoKeyStore = null;
+&nbsp;
+		this._initialize();
+&nbsp;
+	}
+&nbsp;
+	/**
+	 * Set the cryptoKeyStore.
+	 *
+	 * When the application needs to use a key store other than the default,
+	 * it should use the {@link Client} newCryptoKeyStore to create an instance and
+	 * use this function to set the instance on the CryptoSuite.
+	 *
+	 * @param {CryptoKeyStore} cryptoKeyStore The cryptoKeyStore.
+	 */
+	setCryptoKeyStore(cryptoKeyStore) {
+		this._cryptoKeyStore = cryptoKeyStore;
+	}
+&nbsp;
+	_initialize() {
+		if (this._keySize === 256) {
+			this._curveName = 'secp256r1';
+			this._ecdsaCurve = elliptic.curves['p256'];
+		} else <span class="missing-if-branch" title="else path not taken" >E</span>if (this._keySize === 384) {
+			this._curveName = 'secp384r1';
+			this._ecdsaCurve = elliptic.curves['p384'];
+		}
+&nbsp;
+		// hash function must be set carefully to produce the hash size compatible with the key algorithm
+		// https://www.ietf.org/rfc/rfc5480.txt (see page 9 "Recommended key size, digest algorithm and curve")
+&nbsp;
+		logger.debug('Hash algorithm: %s, hash output size: %s', this._hashAlgo, this._keySize);
+&nbsp;
+		switch (this._hashAlgo.toLowerCase() + '-' + this._keySize) {
+		case 'sha3-256':
+			this._hashFunction = hashPrimitives.sha3_256;
+			this._hashFunctionKeyDerivation = hashPrimitives.hash_sha3_256;
+			break;
+		case 'sha3-384':
+			this._hashFunction = hashPrimitives.sha3_384;
+			this._hashFunctionKeyDerivation = hashPrimitives.hash_sha3_384;
+			break;
+		case 'sha2-256':
+			this._hashFunction = hashPrimitives.sha2_256;
+			this._hashFunctionKeyDerivation = hashPrimitives.hash_sha2_256;
+			break;
+		case 'sha2-384':
+			this._hashFunction = hashPrimitives.sha2_384;
+			//TODO: this._hashFunctionKeyDerivation = xxxxxxx;
+			break;
+		default:
+			throw Error(util.format('Unsupported hash algorithm and key size pair: %s-%s', this._hashAlgo, this._keySize));
+		}
+&nbsp;
+		this._hashOutputSize = this._keySize / 8;
+&nbsp;
+		this._ecdsa = new EC(this._ecdsaCurve);
+	}
+&nbsp;
+	/**
+	 * This is an implementation of {@link module:api.CryptoSuite#generateKey}
+	 * Returns an instance of {@link module.api.Key} representing the private key, which also
+	 * encapsulates the public key. It'll also save the private key in the KeyValueStore.
+	 *
+	 * @param {object} opts Optional.
+	 * *    &lt;br&gt;`ephemeral`: {boolean} Optional. If not set, defaults to saving the key. If true, will not save the key.
+	 * @returns {Key} Promise of an instance of {@link module:ECDSA_KEY} containing the private key and the public key
+	 */
+	generateKey(opts) {
+		var pair = KEYUTIL.generateKeypair('EC', this._curveName);
+&nbsp;
+		if (typeof opts !== 'undefined' &amp;&amp; typeof opts.ephemeral !== 'undefined' &amp;&amp; opts.ephemeral === true) {
+			logger.debug('generateKey, ephemeral true, Promise resolved');
+			return Promise.resolve(new ECDSAKey(pair.prvKeyObj));
+		} else {
+			if (!this._cryptoKeyStore) {
+				throw new Error('generateKey opts.ephemeral is false, which requires CryptoKeyStore to be set.');
+			}
+			// unless "opts.ephemeral" is explicitly set to "true", default to saving the key
+			var key = new ECDSAKey(pair.prvKeyObj);
+&nbsp;
+			var self = this;
+			return new Promise((resolve, reject) =&gt; {
+				self._cryptoKeyStore._getKeyStore()
+				.then ((store) =&gt; {
+					logger.debug('generateKey, store.setValue');
+					return store.putKey(key)
+						.then(() =&gt; {
+							return resolve(key);
+						}).catch((err) =&gt; {
+<span class="cstat-no" title="statement not covered" >							reject(err);</span>
+						});
+				});
+&nbsp;
+			});
+		}
+	}
+&nbsp;
+	/**
+	 * This is an implementation of {@link module:api.CryptoSuite#deriveKey}
+	 * To be implemented
+	 */
+	deriveKey<span class="fstat-no" title="function not covered" >(key, opts) {</span>
+<span class="cstat-no" title="statement not covered" >		throw new Error('Not implemented yet');</span>
+	}
+&nbsp;
+	/**
+	 * This is an implementation of {@link module:api.CryptoSuite#importKey}
+	 **/
+	importKey(raw, opts) {
+		logger.debug('importKey - start');
+		var store_key = true; //default
+		if (typeof opts !== 'undefined' &amp;&amp; typeof opts.ephemeral !== 'undefined' &amp;&amp; opts.ephemeral === true) {
+			store_key = false;
+		}
+		if (!!store_key &amp;&amp; !this._cryptoKeyStore) {
+			throw new Error('importKey opts.ephemeral is false, which requires CryptoKeyStore to be set.');
+		}
+&nbsp;
+		var self = this;
+		// attempt to import the raw content, assuming it's one of the following:
+		// X.509v1/v3 PEM certificate (RSA/DSA/ECC)
+		// PKCS#8 PEM RSA/DSA/ECC public key
+		// PKCS#5 plain PEM DSA/RSA private key
+		// PKCS#8 plain PEM RSA/ECDSA private key
+		// TODO: add support for the following passcode-protected PEM formats
+		// - PKCS#5 encrypted PEM RSA/DSA private
+		// - PKCS#8 encrypted PEM RSA/ECDSA private key
+		var pemString = Buffer.from(raw).toString();
+		pemString = makeRealPem(pemString);
+		var key = null;
+		var theKey = null;
+		var error = null;
+		try {
+			key = KEYUTIL.getKey(pemString);
+		} catch(err) {
+<span class="cstat-no" title="statement not covered" >			error = new Error('Failed to parse key from PEM: ' + err);</span>
+		}
+&nbsp;
+		<span class="missing-if-branch" title="else path not taken" >E</span>if (key &amp;&amp; key.type &amp;&amp; key.type === 'EC') {
+			theKey = new ECDSAKey(key);
+			logger.debug('importKey - have the key %j',theKey);
+		}
+		else {
+<span class="cstat-no" title="statement not covered" >			error = new Error('Does not understand PEM contents other than ECDSA private keys and certificates');</span>
+		}
+&nbsp;
+		if(!store_key) {
+			<span class="missing-if-branch" title="if path not taken" >I</span>if(error) {
+<span class="cstat-no" title="statement not covered" >				logger.error('importKey - %s',error);</span>
+<span class="cstat-no" title="statement not covered" >				throw error;</span>
+			}
+			return theKey;
+		}
+		else {
+			<span class="missing-if-branch" title="if path not taken" >I</span>if(error) {
+<span class="cstat-no" title="statement not covered" >				logger.error('importKey - %j',error);</span>
+<span class="cstat-no" title="statement not covered" >				return Promise.reject(error);</span>
+			}
+			return new Promise((resolve, reject) =&gt; {
+				return self._cryptoKeyStore._getKeyStore()
+					.then ((store) =&gt; {
+						return store.putKey(theKey);
+					}).then(() =&gt; {
+						return resolve(theKey);
+					}).catch((err) =&gt; {
+<span class="cstat-no" title="statement not covered" >						reject(err);</span>
+					});
+&nbsp;
+			});
+		}
+	}
+&nbsp;
+	/**
+	 * This is an implementation of {@link module:api.CryptoSuite#getKey}
+	 * Returns the key this CSP associates to the Subject Key Identifier ski.
+	 */
+	getKey(ski) {
+		var self = this;
+		var store;
+&nbsp;
+		if (!self._cryptoKeyStore) {
+			throw new Error('getKey requires CryptoKeyStore to be set.');
+		}
+		return new Promise((resolve, reject) =&gt; {
+			self._cryptoKeyStore._getKeyStore()
+			.then ((st) =&gt; {
+				store = st;
+				return store.getKey(ski);
+			}).then((key) =&gt; {
+				<span class="missing-if-branch" title="else path not taken" >E</span>if (ECDSAKey.isInstance(key))
+					return resolve(key);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >				if (key !== null) {</span>
+<span class="cstat-no" title="statement not covered" >					var pubKey = KEYUTIL.getKey(key);</span>
+<span class="cstat-no" title="statement not covered" >					return resolve(new ECDSAKey(pubKey));	</span>			}
+			}).catch((err) =&gt; {
+<span class="cstat-no" title="statement not covered" >				reject(err);</span>
+			});
+&nbsp;
+		});
+	}
+&nbsp;
+	/**
+	 * This is an implementation of {@link module:api.CryptoSuite#hash}
+	 * Hashes messages msg using options opts.
+	 */
+	hash(msg, opts) {
+		return this._hashFunction(msg);
+	}
+&nbsp;
+	/**
+	 * This is an implementation of {@link module:api.CryptoSuite#sign}
+	 * Signs digest using key k.
+	 *
+	 * The opts argument is not needed.
+	 */
+	sign(key, digest, opts) {
+		if (typeof key === 'undefined' || key === null) {
+			throw new Error('A valid key is required to sign');
+		}
+&nbsp;
+		if (typeof digest === 'undefined' || digest === null) {
+			throw new Error('A valid message is required to sign');
+		}
+&nbsp;
+		// Note that the statement below uses internal implementation specific to the
+		// module './ecdsa/key.js'
+		var signKey = this._ecdsa.keyFromPrivate(key._key.prvKeyHex, 'hex');
+		var sig = this._ecdsa.sign(digest, signKey);
+		sig = _preventMalleability(sig, key._key.ecparams);
+		logger.debug('ecdsa signature: ', sig);
+		return sig.toDER();
+	}
+&nbsp;
+	/**
+	 * This is an implementation of {@link module:api.CryptoSuite#verify}
+	 * Verifies signature against key k and digest
+	 * The opts argument should be appropriate for the algorithm used.
+	 */
+	verify(key, signature, digest) {
+		if (typeof key === 'undefined' || key === null) {
+			throw new Error('A valid key is required to verify');
+		}
+&nbsp;
+		if (typeof signature === 'undefined' || signature === null) {
+			throw new Error('A valid signature is required to verify');
+		}
+&nbsp;
+		if (typeof digest === 'undefined' || digest === null) {
+			throw new Error('A valid message is required to verify');
+		}
+&nbsp;
+		if (!_checkMalleability(signature, key._key.ecparams)) {
+			logger.error(new Error('Invalid S value in signature. Must be smaller than half of the order.').stack);
+			return false;
+		}
+&nbsp;
+		var pubKey = this._ecdsa.keyFromPublic(key.getPublicKey()._key.pubKeyHex, 'hex');
+		// note that the signature is generated on the hash of the message, not the message itself
+		return pubKey.verify(this.hash(digest), signature);
+	}
+&nbsp;
+	/**
+	 * This is an implementation of {@link module:api.CryptoSuite#encrypt}
+	 * Encrypts plaintext using key k.
+	 * The opts argument should be appropriate for the algorithm used.
+	 */
+	encrypt<span class="fstat-no" title="function not covered" >(key, plaintext, opts) {</span>
+<span class="cstat-no" title="statement not covered" >		throw new Error('Not implemented yet');</span>
+	}
+&nbsp;
+	/**
+	 * This is an implementation of {@link module:api.CryptoSuite#decrypt}
+	 * Decrypts ciphertext using key k.
+	 * The opts argument should be appropriate for the algorithm used.
+	 */
+	decrypt<span class="fstat-no" title="function not covered" >(key, cipherText, opts) {</span>
+<span class="cstat-no" title="statement not covered" >		throw new Error('Not implemented yet');</span>
+	}
+};
+&nbsp;
+// [Angelo De Caro] ECDSA signatures do not have unique representation and this can facilitate
+// replay attacks and more. In order to have a unique representation,
+// this change-set forses BCCSP to generate and accept only signatures
+// with low-S.
+// Bitcoin has also addressed this issue with the following BIP:
+// https://github.com/bitcoin/bips/blob/master/bip-0062.mediawiki
+// Before merging this change-set, we need to ensure that client-sdks
+// generates signatures properly in order to avoid massive rejection
+// of transactions.
+&nbsp;
+// map for easy lookup of the "N/2" value per elliptic curve
+const halfOrdersForCurve = {
+	'secp256r1': elliptic.curves['p256'].n.shrn(1),
+	'secp384r1': elliptic.curves['p384'].n.shrn(1)
+};
+&nbsp;
+function _preventMalleability(sig, curveParams) {
+	var halfOrder = halfOrdersForCurve[curveParams.name];
+	<span class="missing-if-branch" title="if path not taken" >I</span>if (!halfOrder) {
+<span class="cstat-no" title="statement not covered" >		throw new Error('Can not find the half order needed to calculate "s" value for immalleable signatures. Unsupported curve name: ' + curve);</span>
+	}
+&nbsp;
+	// in order to guarantee 's' falls in the lower range of the order, as explained in the above link,
+	// first see if 's' is larger than half of the order, if so, it needs to be specially treated
+	if (sig.s.cmp(halfOrder) == 1) { // module 'bn.js', file lib/bn.js, method cmp()
+		// convert from BigInteger used by jsrsasign Key objects and bn.js used by elliptic Signature objects
+		var bigNum = new BN(curveParams.n.toString(16), 16);
+		sig.s = bigNum.sub(sig.s);
+	}
+&nbsp;
+	return sig;
+}
+&nbsp;
+function _checkMalleability(sig, curveParams) {
+	var halfOrder = halfOrdersForCurve[curveParams.name];
+	<span class="missing-if-branch" title="if path not taken" >I</span>if (!halfOrder) {
+<span class="cstat-no" title="statement not covered" >		throw new Error('Can not find the half order needed to calculate "s" value for immalleable signatures. Unsupported curve name: ' + curve);</span>
+	}
+&nbsp;
+	// first need to unmarshall the signature bytes into the object with r and s values
+	var sigObject = new Signature(sig, 'hex');
+	<span class="missing-if-branch" title="if path not taken" >I</span>if (!sigObject.r || !sigObject.s) {
+<span class="cstat-no" title="statement not covered" >		throw new Error('Failed to load the signature object from the bytes.');</span>
+	}
+&nbsp;
+	// in order to guarantee 's' falls in the lower range of the order, as explained in the above link,
+	// first see if 's' is larger than half of the order, if so, it is considered invalid in this context
+	if (sigObject.s.cmp(halfOrder) == 1) { // module 'bn.js', file lib/bn.js, method cmp()
+		return false;
+	}
+&nbsp;
+	return true;
+}
+&nbsp;
+// Utilitly method to make sure the start and end markers are correct
+function makeRealPem(pem) {
+	var result = null;
+	<span class="missing-if-branch" title="else path not taken" >E</span>if(typeof pem == 'string') {
+		result = pem.replace(/-----BEGIN -----/, '-----BEGIN CERTIFICATE-----');
+		result = result.replace(/-----END -----/, '-----END CERTIFICATE-----');
+		result = result.replace(/-----([^-]+) ECDSA ([^-]+)-----([^-]*)-----([^-]+) ECDSA ([^-]+)-----/, '-----$1 EC $2-----$3-----$4 EC $5-----');
+	}
+	return result;
+}
+&nbsp;
+&nbsp;
+/*
+ * Convert a PEM encoded certificate to DER format
+ * @param {string) pem PEM encoded public or private key
+ * @returns {string} hex Hex-encoded DER bytes
+ * @throws Will throw an error if the conversation fails
+ */
+<span class="fstat-no" title="function not covered" >function pemToDER(pem) {</span>
+&nbsp;
+	//PEM format is essentially a nicely formatted base64 representation of DER encoding
+	//So we need to strip "BEGIN" / "END" header/footer and string line breaks
+	//Then we simply base64 decode it and convert to hex string
+<span class="cstat-no" title="statement not covered" >	var contents = pem.toString().trim().split(/\r?\n/);</span>
+	//check for BEGIN and END tags
+<span class="cstat-no" title="statement not covered" >	if (!(contents[0].match(/\-\-\-\-\-\s*BEGIN ?([^-]+)?\-\-\-\-\-/) &amp;&amp;</span>
+		contents[contents.length - 1].match(/\-\-\-\-\-\s*END ?([^-]+)?\-\-\-\-\-/))) {
+<span class="cstat-no" title="statement not covered" >		throw new Error('Input parameter does not appear to be PEM-encoded.');</span>
+	};
+<span class="cstat-no" title="statement not covered" >	contents.shift(); </span>//remove BEGIN
+<span class="cstat-no" title="statement not covered" >	contents.pop(); </span>//remove END
+	//base64 decode and encode as hex string
+<span class="cstat-no" title="statement not covered" >	var hex = Buffer.from(contents.join(''), 'base64').toString('hex');</span>
+<span class="cstat-no" title="statement not covered" >	return hex;</span>
+}
+&nbsp;
+&nbsp;
+module.exports = CryptoSuite_ECDSA_AES;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 06 2017 17:25:54 GMT+0530 (IST)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

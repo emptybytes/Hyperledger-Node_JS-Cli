@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for fabric-client/lib/Policy.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">fabric-client/lib/</a> Policy.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">99.03% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>102/103</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">92.16% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>47/51</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>5/5</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">99.03% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>102/103</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">47×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">47×</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*
+ Copyright 2017 IBM All Rights Reserved.
+&nbsp;
+ Licensed under the Apache License, Version 2.0 (the 'License');
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+&nbsp;
+	  http://www.apache.org/licenses/LICENSE-2.0
+&nbsp;
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an 'AS IS' BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
+&nbsp;
+'use strict';
+&nbsp;
+var grpc = require('grpc');
+var util = require('util');
+&nbsp;
+var _mspPrProto = grpc.load(__dirname + '/protos/msp/msp_principal.proto').common;
+var _policiesProto = grpc.load(__dirname + '/protos/common/policies.proto').common;
+&nbsp;
+var IDENTITY_TYPE = {
+	Role: 'role',
+	OrganizationUnit: 'organization-unit',
+	Identity: 'identity'
+};
+&nbsp;
+/**
+ * @typedef {Object} Policy Defines the endorsement policies
+ * @property {Identity[]} identities List of identities to be referenced in the "policy" section
+ * @property {PolicySpec[]} policy The specification of the policy using a combination of "signed-by" and
+ * "n-of" structures. The design allows recursion
+ */
+&nbsp;
+/**
+ * @typedef {Object} Identity
+ * @property {Role} role Any identity of a particular role
+ * @property OrganizationUnit Any identities belonging to an organization unit per certificate chain of trust
+ * @property Identity A specific identity
+ */
+&nbsp;
+/**
+ * @typedef {Object} Role
+ * @property {string} name Name of the role. Value can be "member" or "admin"
+ * @property {string} mspId The member service provider Id used to process the identity
+ */
+&nbsp;
+/**
+ * @typedef {Object} PolicySpec
+ * @property {Object} type The type of policy can be "signed-by" for a single identity signature or "n-of"
+ * where "n" is a numeric value. If the type property is "signed-by", the value is the numeric index into the
+ * array of identities specified in the policy. If the type property is "n-of", the value is an array of
+ * {@link PolicySpec} objects. As you can see, this structure allows recursive definitions of complex policies.
+ */
+&nbsp;
+/**
+ * Governs the constructions of endorsement policies to be passed into the calls to instantiate chaincodes
+ * @class
+ */
+var EndorsementPolicy = class {
+	/**
+	 * Constructs an endorsement policy envelope. If the optional "policy" object is not present, a default
+	 * policy of "a signature by any member from any of the organizations corresponding to the array of member
+	 * service providers" is returned.
+	 *
+	 * @param {MSP[]} msps Array of Member Service Provider objects representing the participants of the
+	 * endorsement policy to be constructed
+	 * @param {Policy} policy The policy specification. It has two high-level properties: identities and policy.
+	 * see the type definition of {@link Policy} for details.
+	 */
+	static buildPolicy(msps, policy) {
+		if (typeof policy === 'undefined' || policy === null) {
+			// no policy was passed in, construct a 'Signed By any member of an organization by mspid' policy
+			// construct a list of msp principals to select from using the 'n out of' operator
+			var principals = [], signedBys = [];
+			var index = 0;
+			for (let name in msps) {
+				<span class="missing-if-branch" title="else path not taken" >E</span>if (msps.hasOwnProperty(name)) {
+					let onePrn = new _mspPrProto.MSPPrincipal();
+					onePrn.setPrincipalClassification(_mspPrProto.MSPPrincipal.Classification.ROLE);
+&nbsp;
+					let memberRole = new _mspPrProto.MSPRole();
+					memberRole.setRole(_mspPrProto.MSPRole.MSPRoleType.MEMBER);
+					memberRole.setMspIdentifier(name);
+&nbsp;
+					onePrn.setPrincipal(memberRole.toBuffer());
+&nbsp;
+					principals.push(onePrn);
+&nbsp;
+					var signedBy = new _policiesProto.SignaturePolicy();
+					signedBy.set('signed_by', index++);
+					signedBys.push(signedBy);
+				}
+			}
+&nbsp;
+			if (principals.length === 0) {
+				throw new Error('Verifying MSPs not found in the channel object, make sure "intialize()" is called first.');
+			}
+&nbsp;
+			// construct 'one of any' policy
+			var oneOfAny = new _policiesProto.SignaturePolicy.NOutOf();
+			oneOfAny.setN(1);
+			oneOfAny.setPolicies(signedBys);
+&nbsp;
+			var noutof = new _policiesProto.SignaturePolicy();
+			noutof.set('n_out_of', oneOfAny);
+&nbsp;
+			var envelope = new _policiesProto.SignaturePolicyEnvelope();
+			envelope.setVersion(0);
+			envelope.setPolicy(noutof);
+			envelope.setIdentities(principals);
+&nbsp;
+			return envelope.toBuffer();
+		} else {
+			// check the structure of the policy object is legit
+			if (typeof policy.identities === 'undefined' || policy.identities === null || policy.identities === '' || policy.identities === {}) {
+				throw new Error('Invalid policy, missing the "identities" property');
+			} else if (!Array.isArray(policy.identities)) {
+				throw new Error('Invalid policy, the "identities" property must be an array');
+			}
+&nbsp;
+			if (typeof policy.policy === 'undefined' || policy.policy === null || policy.policy === '' || policy.policy === {}) {
+				throw new Error('Invalid policy, missing the "policy" property');
+			}
+&nbsp;
+			var principals = [];
+			policy.identities.forEach((identity) =&gt; {
+				let newPrincipal = buildPrincipal(identity);
+				principals.push(newPrincipal);
+			});
+&nbsp;
+			var thePolicy = new parsePolicy(policy.policy);
+&nbsp;
+			var envelope = new _policiesProto.SignaturePolicyEnvelope();
+			envelope.setVersion(0);
+			envelope.setPolicy(thePolicy);
+			envelope.setIdentities(principals);
+&nbsp;
+			return envelope.toBuffer();
+		}
+	}
+};
+&nbsp;
+function buildPrincipal(identity) {
+	let principalType = getIdentityType(identity);
+	let newPrincipal = new _mspPrProto.MSPPrincipal();
+&nbsp;
+	switch (principalType) {
+	case IDENTITY_TYPE.Role:
+		newPrincipal.setPrincipalClassification(_mspPrProto.MSPPrincipal.Classification.ROLE);
+&nbsp;
+		let roleName = identity[principalType].name;
+		if ('member' !== roleName &amp;&amp; 'admin' !== roleName) {
+			throw new Error(util.format('Invalid role name found: must be one of "member" or "admin", but found "%s"', roleName));
+		}
+&nbsp;
+		let mspid = identity[principalType].mspId;
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (typeof mspid !== 'string' || mspid === null || mspid === '') {
+<span class="cstat-no" title="statement not covered" >			throw new Error(util.format('Invalid mspid found: must be a non-empty string, but found "%s"', mspid));</span>
+		}
+&nbsp;
+		let newRole = new _mspPrProto.MSPRole();
+		newRole.setRole((roleName === 'member') ? _mspPrProto.MSPRole.MSPRoleType.MEMBER : _mspPrProto.MSPRole.MSPRoleType.ADMIN);
+		newRole.setMspIdentifier(identity[principalType].mspId);
+&nbsp;
+		newPrincipal.setPrincipal(newRole.toBuffer());
+		break;
+	case IDENTITY_TYPE.OrganizationUnit:
+	case IDENTITY_TYPE.Identity:
+		throw new Error('NOT IMPLEMENTED');
+	}
+&nbsp;
+	return newPrincipal;
+}
+&nbsp;
+function getIdentityType(obj) {
+	var invalidTypes = [];
+	for (let key in obj) {
+		<span class="missing-if-branch" title="else path not taken" >E</span>if (obj.hasOwnProperty(key)) {
+			if (key === IDENTITY_TYPE.Role || key === IDENTITY_TYPE.OrganizationUnit || key === IDENTITY_TYPE.Identity) {
+				return key;
+			} else {
+				invalidTypes.push(key);
+			}
+		}
+	}
+&nbsp;
+	throw new Error(util.format(
+		'Invalid identity type found: must be one of %s, %s or %s, but found %s',
+		IDENTITY_TYPE.Role,
+		IDENTITY_TYPE.OrganizationUnit,
+		IDENTITY_TYPE.Identity,
+		invalidTypes)
+	);
+}
+&nbsp;
+function getPolicyType(spec) {
+	var invalidTypes = [];
+	for (var key in spec) {
+		<span class="missing-if-branch" title="else path not taken" >E</span>if (spec.hasOwnProperty(key)) {
+			// each policy spec has exactly one property of one of these two forms: 'n-of' or 'signed-by'
+			if (key === 'signed-by' || key.match(/^\d+\-of$/)) {
+				return key;
+			} else {
+				invalidTypes.push(key);
+			}
+		}
+	}
+&nbsp;
+	throw new Error(util.format('Invalid policy type found: must be one of "n-of" or "signed-by" but found "%s"', invalidTypes));
+}
+&nbsp;
+function parsePolicy(spec) {
+	var type = getPolicyType(spec);
+	if (type === 'signed-by') {
+		let signedBy = new _policiesProto.SignaturePolicy();
+		signedBy.set('signed_by', spec[type]);
+		return signedBy;
+	} else {
+		let n = type.match(/^(\d+)\-of$/)[1];
+		let array = spec[type];
+&nbsp;
+		let nOutOf = new _policiesProto.SignaturePolicy.NOutOf();
+		nOutOf.setN(parseInt(n));
+&nbsp;
+		let subs = [];
+		array.forEach((sub) =&gt; {
+			var subPolicy = parsePolicy(sub);
+			subs.push(subPolicy);
+		});
+&nbsp;
+		nOutOf.setPolicies(subs);
+&nbsp;
+		let nOf = new _policiesProto.SignaturePolicy();
+		nOf.set('n_out_of', nOutOf);
+&nbsp;
+		return nOf;
+	}
+}
+&nbsp;
+module.exports = EndorsementPolicy;
+module.exports.IDENTITY_TYPE = IDENTITY_TYPE;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 06 2017 17:25:54 GMT+0530 (IST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

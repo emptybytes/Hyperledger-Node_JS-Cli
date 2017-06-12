@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for fabric-client/lib/msp/identity.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">fabric-client/lib/msp/</a> identity.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">90% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>45/50</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">76% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>19/25</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">76.92% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>10/13</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">90% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>45/50</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">142×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">140×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">138×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">136×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">136×</span>
+<span class="cline-any cline-yes">136×</span>
+<span class="cline-any cline-yes">136×</span>
+<span class="cline-any cline-yes">136×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">176×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">174×</span>
+<span class="cline-any cline-yes">174×</span>
+<span class="cline-any cline-yes">174×</span>
+<span class="cline-any cline-yes">174×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">67×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">66×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">65×</span>
+<span class="cline-any cline-yes">65×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">104×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">69×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">66×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">65×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">104×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">104×</span>
+<span class="cline-any cline-yes">104×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+var grpc = require('grpc');
+&nbsp;
+var identityProto = grpc.load(__dirname + '/../protos/msp/identities.proto').msp;
+&nbsp;
+/**
+ * This interface is shared within the peer and client API of the membership service provider.
+ * Identity interface defines operations associated to a "certificate".
+ * That is, the public part of the identity could be thought to be a certificate,
+ * and offers solely signature verification capabilities. This is to be used
+ * at the client side when validating certificates that endorsements are signed
+ * with, and verifying signatures that correspond to these certificates.
+ *
+ * @class
+ */
+var Identity = class {
+	/**
+	 * @param {string} certificate HEX string for the PEM encoded certificate
+	 * @param {Key} publicKey The public key represented by the certificate
+	 * @param {string} mspId The associated MSP's mspId that manages this identity
+	 * @param {CryptoSuite} cryptoSuite The underlying {@link CryptoSuite} implementation for the digital
+	 * signature algorithm
+	 */
+	constructor(certificate, publicKey, mspId, cryptoSuite) {
+&nbsp;
+		if (!certificate)
+			throw new Error('Missing required parameter "certificate".');
+&nbsp;
+		if (!publicKey)
+			throw new Error('Missing required parameter "publicKey".');
+&nbsp;
+		if (!mspId)
+			throw new Error('Missing required parameter "mspId".');
+&nbsp;
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (!cryptoSuite)
+<span class="cstat-no" title="statement not covered" >			throw new Error('Missing required parameter "cryptoSuite".');</span>
+&nbsp;
+		this._certificate = certificate;
+		this._publicKey = publicKey;
+		this._mspId = mspId;
+		this._cryptoSuite = cryptoSuite;
+	}
+&nbsp;
+	/**
+	 * Returns the identifier of the Membser Service Provider that manages
+	 * this identity in terms of being able to understand the key algorithms
+	 * and have access to the trusted roots needed to validate it
+	 * @returns {string}
+	 */
+	getMSPId() {
+		return this._mspId;
+	}
+&nbsp;
+	/**
+	 * This uses the rules that govern this identity to validate it.
+	 * E.g., if it is a fabric TCert implemented as identity, validate
+	 * will check the TCert signature against the assumed root certificate
+	 * authority.
+	 * @returns {boolean}
+	 */
+	isValid<span class="fstat-no" title="function not covered" >() {</span>
+<span class="cstat-no" title="statement not covered" >		return true;</span>
+	}
+&nbsp;
+	/**
+	 * Returns the organization units this identity is related to
+	 * as long as this is public information. In certain implementations
+	 * this could be implemented by certain attributes that are publicly
+	 * associated to that identity, or the identifier of the root certificate
+	 * authority that has provided signatures on this certificate.
+	 * Examples:
+	 *  - OrganizationUnit of a fabric-tcert that was signed by TCA under name
+	 *    "Organization 1", would be "Organization 1".
+	 *  - OrganizationUnit of an alternative implementation of tcert signed by a public
+	 *    CA used by organization "Organization 1", could be provided in the clear
+	 *    as part of that tcert structure that this call would be able to return.
+	 * @returns {string}
+	 */
+	getOrganizationUnits<span class="fstat-no" title="function not covered" >() {</span>
+<span class="cstat-no" title="statement not covered" >		return 'dunno!';</span>
+	}
+&nbsp;
+	/**
+	 * Verify a signature over some message using this identity as reference
+	 * @param {byte[]} msg The message to be verified
+	 * @param {byte[]} signature The signature generated against the message "msg"
+	 * @param {Object} opts Options include 'policy' and 'label'
+	 */
+	verify(msg, signature, opts) {
+		return this._cryptoSuite.verify(this._publicKey, signature, msg);
+	}
+&nbsp;
+	/**
+	 * Verify attributes against the given attribute spec
+	 * TODO: when this method's design is finalized
+	 */
+	verifyAttributes<span class="fstat-no" title="function not covered" >(proof, attributeProofSpec) {</span>
+<span class="cstat-no" title="statement not covered" >		return true;</span>
+	}
+&nbsp;
+	/**
+	 * Converts this identity to bytes
+	 * @returns {Buffer} protobuf-based serialization with two fields: "mspid" and "certificate PEM bytes"
+	 */
+	serialize() {
+		var serializedIdentity = new identityProto.SerializedIdentity();
+		serializedIdentity.setMspid(this.getMSPId());
+		serializedIdentity.setIdBytes(Buffer.from(this._certificate));
+		return serializedIdentity.toBuffer();
+	}
+};
+&nbsp;
+/**
+ * Signer is an interface for an opaque private key that can be used for signing operations
+ *
+ * @class
+ */
+var Signer = class {
+	/**
+	 * @param {CryptoSuite} cryptoSuite The underlying {@link CryptoSuite} implementation for the digital
+	 * signature algorithm
+	 * @param {Key} key The private key
+	 */
+	constructor(cryptoSuite, key) {
+		if (!cryptoSuite)
+			throw new Error('Missing required parameter "cryptoSuite"');
+&nbsp;
+		if (!key)
+			throw new Error('Missing required parameter "key" for private key');
+&nbsp;
+		this._cryptoSuite = cryptoSuite;
+		this._key = key;
+	}
+&nbsp;
+	/**
+	 * Returns the public key corresponding to the opaque, private key
+	 *
+	 * @returns {Key} The public key corresponding to the private key
+	 */
+	getPublicKey() {
+		return this._key.getPublicKey();
+	}
+&nbsp;
+	/**
+	 * Signs digest with the private key.
+     *
+     * Hash implements the SignerOpts interface and, in most cases, one can
+     * simply pass in the hash function used as opts. Sign may also attempt
+     * to type assert opts to other types in order to obtain algorithm
+     * specific values.
+     *
+     * Note that when a signature of a hash of a larger message is needed,
+     * the caller is responsible for hashing the larger message and passing
+     * the hash (as digest) and the hash function (as opts) to Sign.
+	 *
+	 * @param {byte[]} digest The message to sign
+	 * @param {Object} opts
+	 *      hashingFunction: the function to use to hash
+	 */
+	sign(digest, opts) {
+		return this._cryptoSuite.sign(this._key, digest, opts);
+	}
+};
+&nbsp;
+/**
+ * SigningIdentity is an extension of Identity to cover signing capabilities. E.g., signing identity
+ * should be requested in the case of a client who wishes to sign proposal responses and transactions
+ *
+ * @class
+ */
+var SigningIdentity = class extends Identity {
+	/**
+	 * @param {string} certificate HEX string for the PEM encoded certificate
+	 * @param {Key} publicKey The public key represented by the certificate
+	 * @param {string} mspId The associated MSP's ID that manages this identity
+	 * @param {CryptoSuite} cryptoSuite The underlying {@link CryptoSuite} implementation for the digital
+	 * signature algorithm
+	 * @param {Signer} signer The signer object encapsulating the opaque private key and the corresponding
+	 * digital signature algorithm to be used for signing operations
+	 */
+	constructor(certificate, publicKey, mspId, cryptoSuite, signer) {
+		super(certificate, publicKey, mspId, cryptoSuite);
+&nbsp;
+		if (!signer)
+			throw new Error('Missing required parameter "signer".');
+&nbsp;
+		this._signer = signer;
+	}
+&nbsp;
+	/**
+	 * Signs digest with the private key contained inside the signer.
+	 *
+	 * @param {byte[]} msg The message to sign
+	 * @param {object} opts Options object for the signing, contains one field 'hashFunction' that allows
+	 *   different hashing algorithms to be used. If not present, will default to the hash function
+	 *   configured for the identity's own crypto suite object
+	 */
+	sign(msg, opts) {
+		// calculate the hash for the message before signing
+		var hashFunction;
+		if (opts &amp;&amp; opts.hashFunction) {
+			<span class="missing-if-branch" title="else path not taken" >E</span>if (typeof opts.hashFunction !== 'function') {
+				throw new Error('The "hashFunction" field must be a function');
+			}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >			hashFunction = opts.hashFunction;</span>
+		} else {
+			hashFunction = this._cryptoSuite.hash.bind(this._cryptoSuite);
+		}
+&nbsp;
+		var digest = hashFunction(msg);
+		return this._signer.sign(Buffer.from(digest, 'hex'), null);
+	}
+&nbsp;
+	static isInstance(object) {
+		return object._certificate &amp;&amp;
+<span class="branch-1 cbranch-no" title="branch not covered" >			object._publicKey </span>&amp;&amp;
+<span class="branch-2 cbranch-no" title="branch not covered" >			object._mspId </span>&amp;&amp;
+<span class="branch-3 cbranch-no" title="branch not covered" >			object._cryptoSuite </span>&amp;&amp;
+<span class="branch-4 cbranch-no" title="branch not covered" >			object._signer;</span>
+	}
+};
+&nbsp;
+module.exports.Identity = Identity;
+module.exports.SigningIdentity = SigningIdentity;
+module.exports.Signer = Signer;
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 06 2017 17:25:54 GMT+0530 (IST)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

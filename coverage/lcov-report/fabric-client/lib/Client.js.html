@@ -1,0 +1,3260 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for fabric-client/lib/Client.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">fabric-client/lib/</a> Client.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">89.36% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>361/404</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">83.26% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>179/215</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">87.5% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>42/48</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">89.28% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>358/401</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689
+690
+691
+692
+693
+694
+695
+696
+697
+698
+699
+700
+701
+702
+703
+704
+705
+706
+707
+708
+709
+710
+711
+712
+713
+714
+715
+716
+717
+718
+719
+720
+721
+722
+723
+724
+725
+726
+727
+728
+729
+730
+731
+732
+733
+734
+735
+736
+737
+738
+739
+740
+741
+742
+743
+744
+745
+746
+747
+748
+749
+750
+751
+752
+753
+754
+755
+756
+757
+758
+759
+760
+761
+762
+763
+764
+765
+766
+767
+768
+769
+770
+771
+772
+773
+774
+775
+776
+777
+778
+779
+780
+781
+782
+783
+784
+785
+786
+787
+788
+789
+790
+791
+792
+793
+794
+795
+796
+797
+798
+799
+800
+801
+802
+803
+804
+805
+806
+807
+808
+809
+810
+811
+812
+813
+814
+815
+816
+817
+818
+819
+820
+821
+822
+823
+824
+825
+826
+827
+828
+829
+830
+831
+832
+833
+834
+835
+836
+837
+838
+839
+840
+841
+842
+843
+844
+845
+846
+847
+848
+849
+850
+851
+852
+853
+854
+855
+856
+857
+858
+859
+860
+861
+862
+863
+864
+865
+866
+867
+868
+869
+870
+871
+872
+873
+874
+875
+876
+877
+878
+879
+880
+881
+882
+883
+884
+885
+886
+887
+888
+889
+890
+891
+892
+893
+894
+895
+896
+897
+898
+899
+900
+901
+902
+903
+904
+905
+906
+907
+908
+909
+910
+911
+912
+913
+914
+915
+916
+917
+918
+919
+920
+921
+922
+923
+924
+925
+926
+927
+928
+929
+930
+931
+932
+933
+934
+935
+936
+937
+938
+939
+940
+941
+942
+943
+944
+945
+946
+947
+948
+949
+950
+951
+952
+953
+954
+955
+956
+957
+958
+959
+960
+961
+962
+963
+964
+965
+966
+967
+968
+969
+970
+971
+972
+973
+974
+975
+976
+977
+978
+979
+980
+981
+982
+983
+984
+985
+986
+987
+988
+989
+990
+991
+992
+993
+994
+995
+996
+997
+998
+999
+1000
+1001
+1002
+1003
+1004
+1005
+1006
+1007
+1008
+1009
+1010
+1011
+1012
+1013
+1014
+1015
+1016
+1017
+1018
+1019
+1020
+1021
+1022
+1023
+1024
+1025
+1026
+1027
+1028
+1029
+1030
+1031
+1032
+1033
+1034
+1035
+1036
+1037
+1038
+1039
+1040
+1041
+1042
+1043
+1044
+1045
+1046
+1047
+1048
+1049
+1050
+1051
+1052
+1053
+1054
+1055
+1056
+1057
+1058
+1059
+1060
+1061
+1062
+1063
+1064
+1065
+1066</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">63×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-yes">112×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">56×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62×</span>
+<span class="cline-any cline-yes">62×</span>
+<span class="cline-any cline-yes">62×</span>
+<span class="cline-any cline-yes">62×</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">67×</span>
+<span class="cline-any cline-yes">67×</span>
+<span class="cline-any cline-yes">67×</span>
+<span class="cline-any cline-yes">67×</span>
+<span class="cline-any cline-yes">66×</span>
+<span class="cline-any cline-yes">66×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">162×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">161×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">159×</span>
+<span class="cline-any cline-yes">159×</span>
+<span class="cline-any cline-yes">159×</span>
+<span class="cline-any cline-yes">134×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">132×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47×</span>
+<span class="cline-any cline-yes">47×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">45×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">44×</span>
+<span class="cline-any cline-yes">43×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-yes">39×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">35×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span></td><td class="text"><pre class="prettyprint lang-js">/*
+ Copyright 2016 IBM All Rights Reserved.
+&nbsp;
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+&nbsp;
+	  http://www.apache.org/licenses/LICENSE-2.0
+&nbsp;
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
+&nbsp;
+'use strict';
+&nbsp;
+var sdkUtils = require('./utils.js');
+var clientUtils = require('./client-utils.js');
+process.env.GRPC_SSL_CIPHER_SUITES = sdkUtils.getConfigSetting('grpc-ssl-cipher-suites');
+&nbsp;
+var api = require('./api.js');
+var BaseClient = require('./BaseClient.js');
+var User = require('./User.js');
+var Channel = require('./Channel.js');
+var Packager = require('./Packager.js');
+var Peer = require('./Peer.js');
+var EventHub = require('./EventHub.js');
+var Orderer = require('./Orderer.js');
+var TransactionID = require('./TransactionID.js');
+var MSP = require('./msp/msp.js');
+&nbsp;
+var logger = sdkUtils.getLogger('Client.js');
+var util = require('util');
+var fs = require('fs-extra');
+var Constants = require('./Constants.js');
+&nbsp;
+var grpc = require('grpc');
+var _commonProto = grpc.load(__dirname + '/protos/common/common.proto').common;
+var _configtxProto = grpc.load(__dirname + '/protos/common/configtx.proto').common;
+var _ccProto = grpc.load(__dirname + '/protos/peer/chaincode.proto').protos;
+var _queryProto = grpc.load(__dirname + '/protos/peer/query.proto').protos;
+&nbsp;
+/**
+ * Main interaction handler with end user. A client instance provides a handler to interact
+ * with a network of peers, orderers and optionally member services. An application using the
+ * SDK may need to interact with multiple networks, each through a separate instance of the Client.
+ *
+ * Each client when initially created should be initialized with configuration data from the
+ * consensus service, which includes a list of trusted roots, orderer certificates and IP addresses,
+ * and a list of peer certificates and IP addresses that it can access. This must be done out of band
+ * as part of bootstrapping the application environment. It is also the responsibility of the application
+ * to maintain the configuration of a client as the SDK does not persist this object.
+ *
+ * Each Client instance can maintain several {@link Channel} instances representing channels and the associated
+ * private ledgers.
+ *
+ * @class
+ * @extends BaseClient
+ *
+ */
+var Client = class extends BaseClient {
+&nbsp;
+	constructor() {
+		super();
+&nbsp;
+		logger.debug('const - new Client');
+		this._channels = {};
+		this._stateStore = null;
+		this._userContext = null;
+		// keep a collection of MSP's
+		this._msps = new Map();
+&nbsp;
+		// Is in dev mode or network mode
+		this._devMode = false;
+	}
+&nbsp;
+	/**
+	 * Determine if dev mode is enabled.
+	 */
+	isDevMode() {
+		return this._devMode;
+	}
+&nbsp;
+	/**
+	 * Set dev mode to true or false.
+	 */
+	setDevMode(devMode) {
+		this._devMode = devMode;
+	}
+&nbsp;
+	/**
+	 * Returns a channel instance with the given name. This represents a channel and its associated ledger
+	 * (as explained above), and this call returns an empty object. To initialize the channel in the blockchain network,
+	 * a list of participating endorsers and orderer peers must be configured first on the returned object.
+	 * @param {string} name The name of the channel.  Recommend using namespaces to avoid collision.
+	 * @returns {Channel} The uninitialized channel instance.
+	 * @throws {Error} if the channel by that name already exists in the application's state store
+	 */
+	newChannel(name) {
+		var channel = this._channels[name];
+&nbsp;
+		if (channel)
+			throw new Error(util.format('Channel %s already exists', name));
+&nbsp;
+		var channel = new Channel(name, this);
+		this._channels[name] = channel;
+		return channel;
+	}
+&nbsp;
+	/**
+	 * Get a {@link Channel} instance from the state storage. This allows existing channel instances to be saved
+	 * for retrieval later and to be shared among instances of the application. Note that it’s the
+	 * application/SDK’s responsibility to record the channel information. If an application is not able
+	 * to look up the channel information from storage, it may call another API that queries one or more
+	 * Peers for that information.
+	 * @param {string} name The name of the channel.
+	 * @returns {Channel} The channel instance
+	 * @throws {Error} if the state store has not been set or a channel does not exist under that name.
+	 */
+	getChannel(name) {
+		var ret = this._channels[name];
+&nbsp;
+		// TODO: integrate reading from state store
+&nbsp;
+		if (ret)
+			return ret;
+		else {
+			logger.error('Channel not found for name '+name+'.');
+			throw new Error('Channel not found for name '+name+'.');
+		}
+	}
+&nbsp;
+    /**
+	 * Returns a peer instance with the given url.
+	 * @param {string} url - The URL with format of "grpcs://host:port".
+	 * @param {Object} opts - The options for the connection to the peer.
+	 * &lt;br&gt;- request-timeout {string} A integer value in milliseconds to
+	 *       be used as node.js based timeout. This will break the request
+	 *       operation if the grpc request has not responded within this
+	 *       timeout period.
+	 * &lt;br&gt;- pem {string} The certificate file, in PEM format,
+	 *    to use with the gRPC protocol (that is, with TransportCredentials).
+	 *    Required when using the grpcs protocol.
+	 * &lt;br&gt;- ssl-target-name-override {string} Used in test environment only, when the server certificate's
+	 *    hostname (in the 'CN' field) does not match the actual host endpoint that the server process runs
+	 *    at, the application can work around the client TLS verify failure by setting this property to the
+	 *    value of the server certificate's hostname
+	 * &lt;br&gt;- any other standard grpc call options will be passed to the grpc service calls directly
+	 * @returns {Peer} The Peer instance.
+	 */
+	newPeer(url, opts) {
+		var peer = new Peer(url, opts);
+		return peer;
+	}
+&nbsp;
+	/**
+	 * Return a EventHub instance associated with this client instance.
+	 * The EventHub instance must be assigned an end point address and
+	 * connection parameters using the "setPeerAddr" method.
+	 * @see {@link EventHub}
+	 * @returns {EventHub} The EventHub instance
+	 */
+	newEventHub() {
+		var event_hub = new EventHub(this);
+		return event_hub;
+	}
+&nbsp;
+    /**
+	 * Returns an order instance with the given url.
+	 * @param {string} url The URL with format of "grpcs://host:port".
+	 * @param {Object} opts The options for the connection to the peer.
+	 * &lt;br&gt;- request-timeout {string} A integer value in milliseconds to
+	 *       be used as node.js based timeout. This will break the request
+	 *       operation if the grpc request has not responded within this
+	 *       timeout period.
+	 * &lt;br&gt;- pem {string} The certificate file, in PEM format,
+	 *    to use with the gRPC protocol (that is, with TransportCredentials).
+	 *    Required when using the grpcs protocol.
+	 * &lt;br&gt;- ssl-target-name-override {string} Used in test environment only, when the server certificate's
+	 *    hostname (in the 'CN' field) does not match the actual host endpoint that the server process runs
+	 *    at, the application can work around the client TLS verify failure by setting this property to the
+	 *    value of the server certificate's hostname
+	 * &lt;br&gt;- any other standard grpc call options will be passed to the grpc service calls directly
+	 * @returns {Orderer} The orderer instance.
+	 */
+	newOrderer(url, opts) {
+		var orderer = new Orderer(url, opts);
+		return orderer;
+	}
+&nbsp;
+	/**
+	 * Create a new transaction id object with an unique transaction id
+	 * based on included nonce and the user context.
+	 * Requires this client instance to have an assigned user context.
+	 * @returns  {@link TransactionID} An object that contains a transaction id
+	 *           based on the user context and also contains
+	 *           the generated nonce value.
+	 */
+	newTransactionID() {
+		if (typeof this._userContext === 'undefined' || this._userContext === null) {
+			throw new Error('This client instance must be assigned an user context');
+		}
+		let trans_id = new TransactionID(this._userContext);
+&nbsp;
+		return trans_id;
+	}
+&nbsp;
+	/**
+	 * Extracts the protobuf 'ConfigUpdate' object out of the 'ConfigEnvelope'
+	 * that is produced by the ConfigTX tool. The returned object may then be
+	 * signed using the signChannelConfig() method of this class. Once the all
+	 * signatures have been collected this object and the signatures may be used
+	 * on the updateChannel or createChannel requests.
+	 * @param {byte[]} The bytes of the ConfigEnvelope protopuf
+	 * @returns {byte[]} The bytes of the ConfigUpdate protobuf
+	 */
+	extractChannelConfig(config_envelope) {
+		logger.debug('extractConfigUpdate - start');
+		try {
+			var envelope = _commonProto.Envelope.decode(config_envelope);
+			var payload = _commonProto.Payload.decode(envelope.getPayload().toBuffer());
+			var configtx = _configtxProto.ConfigUpdateEnvelope.decode(payload.getData().toBuffer());
+			return configtx.getConfigUpdate().toBuffer();
+		}
+		catch(err) {
+<span class="cstat-no" title="statement not covered" >			if(err instanceof Error) {</span>
+<span class="cstat-no" title="statement not covered" >				logger.error('Problem with extracting the config update object :: %s', err.stack ? err.stack : err);</span>
+<span class="cstat-no" title="statement not covered" >				throw err;</span>
+			}
+			else {
+<span class="cstat-no" title="statement not covered" >				logger.error('Problem with extracting the config update object :: %s',err);</span>
+<span class="cstat-no" title="statement not covered" >				throw new Error(err);</span>
+			}
+		}
+	}
+&nbsp;
+	/**
+	 * Sign a configuration
+	 * @param {byte[]} config - The Configuration Update in byte form
+	 * @return {ConfigSignature} - The signature of the current user on the config bytes
+	 */
+	signChannelConfig(config) {
+		logger.debug('signChannelConfigUpdate - start');
+		if (typeof config === 'undefined' || config === null) {
+			throw new Error('Channel configuration update parameter is required.');
+		}
+		<span class="missing-if-branch" title="if path not taken" >I</span>if(!(config instanceof Buffer)) {
+<span class="cstat-no" title="statement not covered" >			throw new Error('Channel configuration update parameter is not in the correct form.');</span>
+		}
+		var userContext = this.getUserContext();
+&nbsp;
+		// signature is across a signature header and the config update
+		let proto_signature_header = new _commonProto.SignatureHeader();
+		proto_signature_header.setCreator(userContext.getIdentity().serialize());
+		proto_signature_header.setNonce(sdkUtils.getNonce());
+		var signature_header_bytes = proto_signature_header.toBuffer();
+&nbsp;
+		// get all the bytes to be signed together, then sign
+		let signing_bytes = Buffer.concat([signature_header_bytes, config]);
+		let sig = userContext.getSigningIdentity().sign(signing_bytes);
+		let signature_bytes = Buffer.from(sig);
+&nbsp;
+		// build the return object
+		let proto_config_signature = new _configtxProto.ConfigSignature();
+		proto_config_signature.setSignatureHeader(signature_header_bytes);
+		proto_config_signature.setSignature(signature_bytes);
+&nbsp;
+		return proto_config_signature;
+	}
+&nbsp;
+	/**
+	 * Calls the orderer to start building the new channel.
+	 * Only one of the application instances needs to call this method.
+	 * Once the channel is successfully created, this and other application
+	 * instances only need to call Channel joinChannel() to participate on the channel.
+	 * @param {Object} request - An object containing the following fields:
+	 *      &lt;br&gt;`name` : required - {string} The name of the new channel
+	 *      &lt;br&gt;`orderer` : required - {Orderer} object instance representing the
+	 *                      Orderer to send the create request
+	 *      &lt;br&gt;`envelope` : optional - byte[] of the envelope object containing all
+	 *                       required settings and signatures to initialize this channel.
+	 *                       This envelope would have been created by the command
+	 *                       line tool "configtx".
+	 *      &lt;br&gt;`config` : optional - {byte[]} Protobuf ConfigUpdate object extracted from
+	 *                     a ConfigEnvelope created by the ConfigTX tool.
+	 *                     see extractChannelConfig()
+	 *      &lt;br&gt;`signatures` : optional - {ConfigSignature[]} the list of collected signatures
+	 *                         required by the channel create policy when using the `config` parameter.
+	 * @returns {Result} Result Object with status on the create process.
+	 */
+	createChannel(request) {
+		var have_envelope = false;
+		if(request &amp;&amp; request.envelope) {
+			logger.debug('createChannel - have envelope');
+			have_envelope = true;
+		}
+		return this._createOrUpdateChannel(request, have_envelope);
+	}
+&nbsp;
+	/**
+	 * Calls the orderer to update an existing channel.
+	 * Only one of the application instances needs to call this method.
+	 * @param {Object} request - An object containing the following fields:
+	 *      &lt;br&gt;`name` : required - {string} The name of the new channel
+	 *      &lt;br&gt;`orderer` : required - {Orderer} object instance representing the
+	 *                      Orderer to send the update request
+	 *      &lt;br&gt;`envelope` : optional - byte[] of the envelope object containing all
+	 *                       required settings and signatures to initialize this channel.
+	 *                       This envelope would have been created by the command
+	 *                       line tool "configtx".
+	 *      &lt;br&gt;`config` : optional - {byte[]} Protobuf ConfigUpdate object built by the
+	 *                     buildChannelConfig() method of this class.
+	 *      &lt;br&gt;`signatures` : optional - {ConfigSignature[]} the list of collected signatures
+	 *                         required by the channel create policy when using the `config` parameter.
+	 *                         see signChannelConfig() method of this class
+	 * @returns {Result} Result Object with status on the update process.
+	 */
+	updateChannel(request) {
+		var have_envelope = false;
+		<span class="missing-if-branch" title="if path not taken" >I</span>if(request &amp;&amp; request.envelope) {
+<span class="cstat-no" title="statement not covered" >			logger.debug('createChannel - have envelope');</span>
+<span class="cstat-no" title="statement not covered" >			have_envelope = true;</span>
+		}
+		return this._createOrUpdateChannel(request, have_envelope);
+	}
+&nbsp;
+	/*
+	 * internal method to support create or update of a channel
+	 */
+	_createOrUpdateChannel(request, have_envelope) {
+		logger.debug('_createOrUpdateChannel - start');
+		var errorMsg = null;
+&nbsp;
+		if(!request) {
+			errorMsg = 'Missing all required input request parameters for initialize channel';
+		}
+		else {
+			// Verify that a config envelope or config has been included in the request object
+			if (!request.config &amp;&amp; !have_envelope) {
+				errorMsg = 'Missing config request parameter containing the configuration of the channel';
+			}
+			if(!request.signatures &amp;&amp; !have_envelope) {
+				errorMsg = 'Missing signatures request parameter for the new channel';
+			}
+			else if(!Array.isArray(request.signatures ) &amp;&amp; !have_envelope) {
+				errorMsg = 'Signatures request parameter must be an array of signatures';
+			}
+			if(!request.txId &amp;&amp; !have_envelope) {
+				errorMsg = 'Missing txId request parameter';
+			}
+&nbsp;
+			// verify that we have an orderer configured
+			if(!request.orderer) {
+				errorMsg = 'Missing orderer request parameter';
+			}
+			// verify that we have the name of the new channel
+			if(!request.name) {
+				errorMsg = 'Missing name request parameter';
+			}
+		}
+&nbsp;
+		if(errorMsg) {
+			logger.error('_createOrUpdateChannel error %s',errorMsg);
+			return Promise.reject(new Error(errorMsg));
+		}
+&nbsp;
+		var self = this;
+		var channel_id = request.name;
+		var orderer = request.orderer;
+		var userContext = null;
+		var channel = null;
+&nbsp;
+		userContext = this.getUserContext();
+&nbsp;
+		var signature = null;
+		var payload = null;
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (have_envelope) {
+<span class="cstat-no" title="statement not covered" >			logger.debug('_createOrUpdateChannel - have envelope');</span>
+<span class="cstat-no" title="statement not covered" >			var envelope = _commonProto.Envelope.decode(request.envelope);</span>
+<span class="cstat-no" title="statement not covered" >			signature = envelope.signature;</span>
+<span class="cstat-no" title="statement not covered" >			payload = envelope.payload;</span>
+		}
+		else {
+			logger.debug('_createOrUpdateChannel - have config_update');
+			var proto_config_Update_envelope = new _configtxProto.ConfigUpdateEnvelope();
+			proto_config_Update_envelope.setConfigUpdate(request.config);
+			var signatures = _stringToSignature(request.signatures);
+			proto_config_Update_envelope.setSignatures(signatures);
+&nbsp;
+			var proto_channel_header = clientUtils.buildChannelHeader(
+				_commonProto.HeaderType.CONFIG_UPDATE,
+				request.name,
+				request.txId.getTransactionID()
+			);
+&nbsp;
+			var proto_header = clientUtils.buildHeader(userContext.getIdentity(), proto_channel_header, request.txId.getNonce());
+			var proto_payload = new _commonProto.Payload();
+			proto_payload.setHeader(proto_header);
+			proto_payload.setData(proto_config_Update_envelope.toBuffer());
+			var payload_bytes = proto_payload.toBuffer();
+&nbsp;
+			let sig = userContext.getSigningIdentity().sign(payload_bytes);
+			let signature_bytes = Buffer.from(sig);
+&nbsp;
+			signature = signature_bytes;
+			payload = payload_bytes;
+		}
+&nbsp;
+		// building manually or will get protobuf errors on send
+		var out_envelope = {
+			signature: signature,
+			payload : payload
+		};
+&nbsp;
+		logger.debug('_createOrUpdateChannel - about to send envelope');
+		return orderer.sendBroadcast(out_envelope)
+		.then(
+			function(results) {
+				logger.debug('_createOrUpdateChannel - good results from broadcast :: %j',results);
+&nbsp;
+				return Promise.resolve(results);
+			}
+		)
+		.catch(
+			function(error) {
+				<span class="missing-if-branch" title="else path not taken" >E</span>if(error instanceof Error) {
+					logger.debug('_createOrUpdateChannel - rejecting with %s', error);
+					return Promise.reject(error);
+				}
+				else {
+<span class="cstat-no" title="statement not covered" >					logger.error('_createOrUpdateChannel - system error :: %s', error);</span>
+<span class="cstat-no" title="statement not covered" >					return Promise.reject(new Error(error));</span>
+				}
+			}
+		);
+	}
+&nbsp;
+	/**
+	 * Queries the names of all the channels that a
+	 * peer has joined.
+	 * @param {Peer} peer
+	 * @returns {Promise} A promise to return a ChannelQueryResponse proto Object
+	 */
+	queryChannels(peer) {
+		logger.debug('queryChannels - start');
+		if(!peer) {
+			return Promise.reject( new Error('Peer is required'));
+		}
+		var self = this;
+		var txId = new TransactionID(this._userContext);
+		var request = {
+			targets: [peer],
+			chaincodeId : Constants.CSCC,
+			txId: txId,
+			fcn : 'GetChannels',
+			args: []
+		};
+		return Channel.sendTransactionProposal(request, '' /* special channel id */, self)
+		.then(
+			function(results) {
+				var responses = results[0];
+				logger.debug('queryChannels - got response');
+				<span class="missing-if-branch" title="else path not taken" >E</span>if(responses &amp;&amp; Array.isArray(responses)) {
+					//will only be one response as we are only querying one peer
+					<span class="missing-if-branch" title="if path not taken" >I</span>if(responses.length &gt; 1) {
+<span class="cstat-no" title="statement not covered" >						return Promise.reject(new Error('Too many results returned'));</span>
+					}
+					let response = responses[0];
+					<span class="missing-if-branch" title="if path not taken" >I</span>if(response instanceof Error ) {
+<span class="cstat-no" title="statement not covered" >						return Promise.reject(response);</span>
+					}
+					<span class="missing-if-branch" title="else path not taken" >E</span>if(response.response) {
+						logger.debug('queryChannels - response status :: %d', response.response.status);
+						var queryTrans = _queryProto.ChannelQueryResponse.decode(response.response.payload);
+						logger.debug('queryChannels - ProcessedTransaction.channelInfo.length :: %s', queryTrans.channels.length);
+						for (let i=0; i&lt;queryTrans.channels.length; i++) {
+							logger.debug('&gt;&gt;&gt; channel id %s ',queryTrans.channels[i].channel_id);
+						}
+						return Promise.resolve(queryTrans);
+					}
+					// no idea what we have, lets fail it and send it back
+<span class="cstat-no" title="statement not covered" >					return Promise.reject(response);</span>
+				}
+<span class="cstat-no" title="statement not covered" >				return Promise.reject(new Error('Payload results are missing from the query'));</span>
+			}
+		).catch(
+<span class="fstat-no" title="function not covered" >			function(err) {</span>
+<span class="cstat-no" title="statement not covered" >				logger.error('Failed Channels Query. Error: %s', err.stack ? err.stack : err);</span>
+<span class="cstat-no" title="statement not covered" >				return Promise.reject(err);</span>
+			}
+		);
+	}
+&nbsp;
+	/**
+	 * Queries the installed chaincodes on a peer
+	 * returning the details of all chaincodes
+	 * installed on a peer.
+	 * @param {Peer} peer
+	 * @returns {object} ChaincodeQueryResponse proto
+	 */
+	queryInstalledChaincodes(peer) {
+		logger.debug('queryInstalledChaincodes - start peer %s',peer);
+		if(!peer) {
+			return Promise.reject( new Error('Peer is required'));
+		}
+		var self = this;
+		var txId = new TransactionID(this._userContext);
+		var request = {
+			targets: [peer],
+			chaincodeId : Constants.LSCC,
+			txId: txId,
+			fcn : 'getinstalledchaincodes',
+			args: []
+		};
+		return Channel.sendTransactionProposal(request, '' /* special channel id */, self)
+		.then(
+			function(results) {
+				var responses = results[0];
+				logger.debug('queryInstalledChaincodes - got response');
+				<span class="missing-if-branch" title="else path not taken" >E</span>if(responses &amp;&amp; Array.isArray(responses)) {
+					//will only be one response as we are only querying one peer
+					<span class="missing-if-branch" title="if path not taken" >I</span>if(responses.length &gt; 1) {
+<span class="cstat-no" title="statement not covered" >						return Promise.reject(new Error('Too many results returned'));</span>
+					}
+					let response = responses[0];
+					<span class="missing-if-branch" title="if path not taken" >I</span>if(response instanceof Error ) {
+<span class="cstat-no" title="statement not covered" >						return Promise.reject(response);</span>
+					}
+					<span class="missing-if-branch" title="else path not taken" >E</span>if(response.response) {
+						logger.debug('queryInstalledChaincodes - response status :: %d', response.response.status);
+						var queryTrans = _queryProto.ChaincodeQueryResponse.decode(response.response.payload);
+						logger.debug('queryInstalledChaincodes - ProcessedTransaction.chaincodeInfo.length :: %s', queryTrans.chaincodes.length);
+						for (let i=0; i&lt;queryTrans.chaincodes.length; i++) {
+							logger.debug('&gt;&gt;&gt; name %s, version %s, path %s',queryTrans.chaincodes[i].name,queryTrans.chaincodes[i].version,queryTrans.chaincodes[i].path);
+						}
+						return Promise.resolve(queryTrans);
+					}
+					// no idea what we have, lets fail it and send it back
+<span class="cstat-no" title="statement not covered" >					return Promise.reject(response);</span>
+				}
+<span class="cstat-no" title="statement not covered" >				return Promise.reject(new Error('Payload results are missing from the query'));</span>
+			}
+		).catch(
+<span class="fstat-no" title="function not covered" >			function(err) {</span>
+<span class="cstat-no" title="statement not covered" >				logger.error('Failed Installed Chaincodes Query. Error: %s', err.stack ? err.stack : err);</span>
+<span class="cstat-no" title="statement not covered" >				return Promise.reject(err);</span>
+			}
+		);
+	}
+&nbsp;
+	/**
+	 * Sends an install proposal to one or more endorsing peers.
+	 *
+	 * @param {Object} request - An object containing the following fields:
+	 *   &lt;br&gt;`chaincodePath` : required - String of the path to location of
+	 *                         the source code of the chaincode
+	 *   &lt;br&gt;`chaincodeId` : required - String of the name of the chaincode
+	 *   &lt;br&gt;`chaincodeVersion` : required - String of the version of the chaincode
+	 *   &lt;br&gt;`chaincodePackage` : optional - Byte array of the archive content for
+	 *                            the chaincode source. The archive must have a 'src'
+	 *                            folder containing subfolders corresponding to the
+	 *                            'chaincodePath' field. For instance, if the chaincodePath
+	 *                            is 'mycompany/myproject', then the archive must contain a
+	 *                            folder at the path 'src/mycompany/myproject', where the
+	 *                            GO source code resides.
+	 *   &lt;br&gt;`chaincodeType` : optional - Type of chaincode ['golang', 'car', 'java']
+	 *                         (default 'golang')
+	 * @returns {Promise} A Promise for a `ProposalResponse`
+	 * @see /protos/peer/proposal_response.proto
+	 */
+	installChaincode(request) {
+		logger.debug('installChaincode - start');
+&nbsp;
+		var errorMsg = null;
+&nbsp;
+		var peers = null;
+		if (request) {
+			peers = request.targets;
+			// Verify that a Peer has been added
+			if (peers &amp;&amp; peers.length &gt; 0) {
+				logger.debug('installChaincode - found peers ::%s',peers.length);
+			}
+			else {
+				errorMsg = 'Missing peer objects in install chaincode request';
+			}
+		}
+		else {
+			errorMsg = 'Missing input request object on install chaincode request';
+		}
+&nbsp;
+		if (!errorMsg) errorMsg = clientUtils.checkProposalRequest(request, true);
+		if (!errorMsg) errorMsg = clientUtils.checkInstallRequest(request);
+&nbsp;
+		if (errorMsg) {
+			logger.error('installChaincode error ' + errorMsg);
+			return Promise.reject(new Error(errorMsg));
+		}
+&nbsp;
+		let self = this;
+&nbsp;
+		let ccSpec = {
+			type: clientUtils.translateCCType(request.chaincodeType),
+			chaincode_id: {
+				name: request.chaincodeId,
+				path: request.chaincodePath,
+				version: request.chaincodeVersion
+			}
+		};
+		logger.debug('installChaincode ccSpec %s ',JSON.stringify(ccSpec));
+&nbsp;
+		// step 2: construct the ChaincodeDeploymentSpec
+		let chaincodeDeploymentSpec = new _ccProto.ChaincodeDeploymentSpec();
+		chaincodeDeploymentSpec.setChaincodeSpec(ccSpec);
+		chaincodeDeploymentSpec.setEffectiveDate(clientUtils.buildCurrentTimestamp()); //TODO may wish to add this as a request setting
+&nbsp;
+		return _getChaincodePackageData(request, this.isDevMode())
+		.then((data) =&gt; {
+			// DATA may or may not be present depending on devmode settings
+			<span class="missing-if-branch" title="else path not taken" >E</span>if (data) {
+				chaincodeDeploymentSpec.setCodePackage(data);
+				logger.debug('installChaincode - found packaged data');
+			}
+			logger.debug('installChaincode sending deployment spec %s ',chaincodeDeploymentSpec);
+&nbsp;
+			// TODO add ESCC/VSCC info here ??????
+			let lcccSpec = {
+				type: _ccProto.ChaincodeSpec.Type.GOLANG,
+				chaincode_id: {
+					name: Constants.LSCC
+				},
+				input: {
+					args: [Buffer.from('install', 'utf8'), chaincodeDeploymentSpec.toBuffer()]
+				}
+			};
+&nbsp;
+			var header, proposal;
+			var userContext = self.getUserContext();
+			var txId = new TransactionID(userContext);
+			var channelHeader = clientUtils.buildChannelHeader(
+				_commonProto.HeaderType.ENDORSER_TRANSACTION,
+				'', //install does not target a channel
+				txId.getTransactionID(),
+				null,
+				Constants.LSCC
+			);
+			header = clientUtils.buildHeader(userContext.getIdentity(), channelHeader, txId.getNonce());
+			proposal = clientUtils.buildProposal(lcccSpec, header);
+			let signed_proposal = clientUtils.signProposal(userContext.getSigningIdentity(), proposal);
+&nbsp;
+			return clientUtils.sendPeersProposal(peers, signed_proposal)
+			.then(
+				function(responses) {
+					return [responses, proposal, header];
+				}
+			);
+		});
+	}
+&nbsp;
+	/**
+	 * The enrollment materials for Users that have appeared in the instances of the application.
+	 *
+	 * The SDK should have a built-in key value store file-based implementation to allow easy setup during
+	 * development. Production systems would use a store backed by database for more robust storage and
+	 * clustering, so that multiple app instances can share app state via the database.
+	 * This API makes this pluggable so that different store implementations can be selected by the application.
+	 * @param {KeyValueStore} keyValueStore Instance of an alternative KeyValueStore implementation provided by
+	 * the consuming app.
+	 */
+	setStateStore(keyValueStore) {
+		var err = '';
+&nbsp;
+		var methods = sdkUtils.getClassMethods(api.KeyValueStore);
+		methods.forEach(function(m) {
+			if (typeof keyValueStore[m] !== 'function') {
+				err += m + '() ';
+			}
+		});
+&nbsp;
+		if (err !== '') {
+			throw new Error('The "keyValueStore" parameter must be an object that implements the following methods, which are missing: ' + err);
+		}
+&nbsp;
+		this._stateStore = keyValueStore;
+		// userContext invalid on state store change, set to null
+		this._userContext = null;
+	}
+&nbsp;
+	/**
+	 * Save the state of this member to the key value store.
+	 * @returns {Promise} A Promise for the user context object upon successful save
+	 */
+	saveUserToStateStore() {
+		var self = this;
+		logger.debug('saveUserToStateStore, userContext: ' + self._userContext);
+		return new Promise(function(resolve, reject) {
+			if (self._userContext &amp;&amp; self._userContext._name &amp;&amp; self._stateStore) {
+				logger.debug('saveUserToStateStore, begin promise stateStore.setValue');
+				self._stateStore.setValue(self._userContext._name, self._userContext.toString())
+				.then(
+					function(result) {
+						logger.debug('saveUserToStateStore, store.setValue, result = ' + result);
+						resolve(self._userContext);
+					},
+<span class="fstat-no" title="function not covered" >					function (reason) {</span>
+<span class="cstat-no" title="statement not covered" >						logger.debug('saveUserToStateStore, store.setValue, reject reason = ' + reason);</span>
+<span class="cstat-no" title="statement not covered" >						reject(reason);</span>
+					}
+				).catch(
+<span class="fstat-no" title="function not covered" >					function(err) {</span>
+<span class="cstat-no" title="statement not covered" >						logger.debug('saveUserToStateStore, store.setValue, error: ' +err);</span>
+<span class="cstat-no" title="statement not covered" >						reject(new Error(err));</span>
+					}
+				);
+			} else {
+				if (self._userContext == null) {
+					logger.debug('saveUserToStateStore Promise rejected, Cannot save user to state store when userContext is null.');
+					reject(new Error('Cannot save user to state store when userContext is null.'));
+				} else <span class="missing-if-branch" title="if path not taken" >I</span>if (self._userContext._name == null) {
+<span class="cstat-no" title="statement not covered" >					logger.debug('saveUserToStateStore Promise rejected, Cannot save user to state store when userContext has no name.');</span>
+<span class="cstat-no" title="statement not covered" >					reject(new Error('Cannot save user to state store when userContext has no name.'));</span>
+				} else {
+					logger.debug('saveUserToStateStore Promise rejected, Cannot save user to state store when stateStore is null.');
+					reject(new Error('Cannot save user to state store when stateStore is null.'));
+				}
+			}
+		});
+	}
+&nbsp;
+	/**
+	 * Sets an instance of the User class as the security context of this client instance. This user’s
+	 * credentials (ECert), or special transaction certificates that are derived from the user's ECert,
+	 * will be used to conduct transactions and queries with the blockchain network.
+	 * Upon setting the user context, the SDK saves the object in a persistence cache if the “state store”
+	 * has been set on the Client instance. If no state store has been set, this cache will not be established
+	 * and the application is responsible for setting the user context again if the application crashes and is recovered.
+	 *
+	 * @param {User} user An instance of the User class encapsulating the authenticated user’s signing materials
+	 * (private key and enrollment certificate)
+	 * @param {boolean} skipPersistence Whether to skip saving the user object into persistence. Default is false and the
+	 * method will attempt to save the user object to the state store.
+	 * @returns {Promise} Promise of the 'user' object upon successful persistence of the user to the state store
+	 */
+	setUserContext(user, skipPersistence) {
+		logger.debug('setUserContext, user: ' + user + ', skipPersistence: ' + skipPersistence);
+		var self = this;
+		return new Promise((resolve, reject) =&gt; {
+			if (user) {
+				self._userContext = user;
+				if (!skipPersistence) {
+					logger.debug('setUserContext begin promise to saveUserToStateStore');
+					self.saveUserToStateStore()
+					.then((user) =&gt; {
+						return resolve(user);
+					}).catch((err) =&gt; {
+						reject(err);
+					});
+				} else {
+					logger.debug('setUserContext, resolved user');
+					return resolve(user);
+				}
+			} else {
+				logger.debug('setUserContext, Cannot save null userContext');
+				reject(new Error('Cannot save null userContext.'));
+			}
+		});
+	}
+&nbsp;
+	/**
+	 * Returns the user with the signing identity. This can be a synchronous call or asynchronous call, depending
+	 * on whether "checkPersistent" is truthy or not. If truthy, the method is asynchronous and returns a Promise,
+	 * otherwise it's synchronous.
+	 *
+	 * As explained above, the client instance can have an optional state store. The SDK saves enrolled users
+	 * in the storage which can be accessed by authorized users of the application (authentication is done by
+	 * the application outside of the SDK). This function attempts to load the user by name from the local storage
+	 * (via the KeyValueStore interface). The loaded user object must represent an enrolled user with a valid
+	 * enrollment certificate signed by a trusted CA (such as the CA server).
+	 *
+	 * @param {String} name Optional. If not specified, will only return the in-memory user context object, or null
+	 * if not found in memory. If "name" is specified, will also attempt to load it from the state store if search
+	 * in memory failed.
+	 * @param {boolean} checkPersistence Optional. If specified and truthy, the method returns a Promise and will
+	 * attempt to check the state store for the requested user by the "name". If not specified or falsey, the method
+	 * is synchronous and returns the requested user from memory
+	 * @returns {Promise} The user object corresponding to the name, or null if the user does not exist or if the
+	 * state store has not been set.
+	 */
+	getUserContext(name, checkPersistence) {
+		// first check if only one param is passed in for "checkPersistence"
+		if (typeof name === 'boolean' &amp;&amp; name &amp;&amp; typeof checkPersistence === 'undefined')
+			throw new Error('Illegal arguments: "checkPersistence" is truthy but "name" is undefined');
+&nbsp;
+		if (typeof checkPersistence === 'boolean' &amp;&amp; checkPersistence &amp;&amp;
+			(typeof name !== 'string' || name === null || name === ''))
+			throw new Error('Illegal arguments: "checkPersistence" is truthy but "name" is not a valid string value');
+&nbsp;
+		var self = this;
+		var username = name;
+		if ((self._userContext &amp;&amp; name &amp;&amp; self._userContext.getName() === name) || (self._userContext &amp;&amp; !name)) {
+			if (typeof checkPersistence === 'boolean' &amp;&amp; checkPersistence)
+				return Promise.resolve(self._userContext);
+			else
+				return self._userContext;
+		} else {
+			if (typeof username === 'undefined' || !username) {
+				<span class="missing-if-branch" title="if path not taken" >I</span>if (typeof checkPersistence === 'boolean' &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >checkPersistence)</span>
+<span class="cstat-no" title="statement not covered" >					return Promise.resolve(null);</span>
+				else
+					return null;
+			}
+&nbsp;
+			// this could be because the application has not set a user context yet for this client, which would
+			// be an error condiditon, or it could be that this app has crashed before and is recovering, so we
+			// should allow the previously saved user context object to be deserialized
+&nbsp;
+			// first check if there is a user context of the specified name in persistence
+			if (typeof checkPersistence === 'boolean' &amp;&amp; checkPersistence) {
+				if (self._stateStore) {
+					return self.loadUserFromStateStore(username).then(
+						function(userContext) {
+							if (userContext) {
+								logger.debug('Requested user "%s" loaded successfully from the state store on this Client instance: name - %s', name, name);
+								return self.setUserContext(userContext, false);
+							} else {
+								logger.debug('Requested user "%s" not loaded from the state store on this Client instance: name - %s', name, name);
+								return null;
+							}
+						}
+					).then(
+						function(userContext) {
+							return Promise.resolve(userContext);
+						}
+					).catch(
+<span class="fstat-no" title="function not covered" >						function(err) {</span>
+<span class="cstat-no" title="statement not covered" >							logger.error('Failed to load an instance of requested user "%s" from the state store on this Client instance. Error: %s', name, err.stack ? err.stack : err);</span>
+<span class="cstat-no" title="statement not covered" >							return Promise.reject(err);</span>
+						}
+					);
+				} else {
+					// we don't have it in memory or persistence, just return null
+					return Promise.resolve(null);
+				}
+			} else
+				return null;
+		}
+	}
+&nbsp;
+	/**
+	 * Restore the state of this member from the key value store (if found).  If not found, do nothing.
+	 * @returns {Promise} A Promise for a {User} object upon successful restore, or if the user by the name
+	 * does not exist in the state store, returns null without rejecting the promise
+	 */
+	loadUserFromStateStore(name) {
+		var self = this;
+&nbsp;
+		return new Promise(function(resolve, reject) {
+			self._stateStore.getValue(name)
+			.then(
+				function(memberStr) {
+					if (memberStr) {
+						// The member was found in the key value store, so restore the state.
+						var newUser = new User(name);
+						<span class="missing-if-branch" title="if path not taken" >I</span>if (!self.getCryptoSuite()) {
+<span class="cstat-no" title="statement not covered" >							logger.debug('loadUserFromStateStore, cryptoSuite is not set, will load using defaults');</span>
+						}
+						newUser.setCryptoSuite(self.getCryptoSuite());
+&nbsp;
+						return newUser.fromString(memberStr);
+					} else {
+						return null;
+					}
+				})
+			.then(function(data) {
+				if (data) {
+					logger.debug('Successfully loaded user "%s" from local key value store', name);
+					return resolve(data);
+				} else {
+					logger.debug('Failed to load user "%s" from local key value store', name);
+					return resolve(null);
+				}
+			}).catch(
+<span class="fstat-no" title="function not covered" >				function(err) {</span>
+<span class="cstat-no" title="statement not covered" >					logger.error('Failed to load user "%s" from local key value store. Error: %s', name, err.stack ? err.stack : err);</span>
+<span class="cstat-no" title="statement not covered" >					reject(err);</span>
+				}
+			);
+		});
+	}
+&nbsp;
+	/**
+	 * A convenience method for obtaining the state store object in use for this client.
+	 * @return {KeyValueStore} The KeyValueStore implementation object set within this Client, or null if it does not exist.
+	 */
+	getStateStore() {
+		return this._stateStore;
+	}
+&nbsp;
+	/**
+	 * Returns an authorized user loaded using the
+	 * private key and pre-enrolled certificate from files
+	 * based on the MSP config directory structure:
+	 * &lt;br&gt;root
+	 * &lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;\_ keystore
+	 * &lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;\_ admin.pem  &lt;&lt;== this is the private key saved in PEM file
+	 * &lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;\_ signcerts
+	 * &lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;\_ admin.pem  &lt;&lt;== this is the signed certificate saved in PEM file
+	 * @param {object} opts
+	 * &lt;br&gt;- username {string} - the user name used for enrollment
+	 * &lt;br&gt;- mspid {string} - the MSP id
+	 * &lt;br&gt;
+	 * &lt;br&gt;- cryptoContent {object}
+	 * &lt;br&gt;---- privateKey {string} - the PEM file name including the root path - required when using the file system
+	 * &lt;br&gt;---- signedCert {string} - the PEM file name including the root path - required when using the file system
+	 * &lt;br&gt;---- or
+	 * &lt;br&gt;---- privateKeyPEM {string} - the PEM string - required when no file system is available
+	 * &lt;br&gt;---- signedCertPEM {string} - the PEM string - required when no file system is available
+	 *
+	 */
+	createUser(opts) {
+		logger.debug('opts = %s', JSON.stringify(opts));
+		if (!opts) {
+			return Promise.reject(new Error('Client.createUser missing required \'opts\' parameter.'));
+		}
+		if (!opts.username || opts.username &amp;&amp; opts.username.length &lt; 1) {
+			return Promise.reject(new Error('Client.createUser parameter \'opts username\' is required.'));
+		}
+		if (!opts.mspid || opts.mspid &amp;&amp; opts.mspid.length &lt; 1) {
+			return Promise.reject(new Error('Client.createUser parameter \'opts mspid\' is required.'));
+		}
+		if (opts.cryptoContent) {
+			if ((opts.cryptoContent.privateKey || opts.cryptoContent.signedCert) &amp;&amp;
+				(!opts.cryptoContent.privateKey || !opts.cryptoContent.signedCert)) {
+				return Promise.reject(new Error('Client.createUser both parameters \'opts cryptoContent privateKey and signedCert\' files are required.'));
+			}
+			if ((opts.cryptoContent.privateKeyPEM || opts.cryptoContent.signedCertPEM) &amp;&amp;
+				(!opts.cryptoContent.privateKeyPEM || !opts.cryptoContent.signedCertPEM)) {
+				return Promise.reject(new Error('Client.createUser both parameters \'opts cryptoContent privateKeyPEM and signedCertPEM\' strings are required.'));
+			}
+		} else {
+			return Promise.reject(new Error('Client.createUser parameter \'opts cryptoContent\' is required.'));
+		}
+&nbsp;
+		if (this.getCryptoSuite() == null) {
+			logger.debug('cryptoSuite is null, creating default cryptoSuite and cryptoKeyStore');
+			this.setCryptoSuite(sdkUtils.newCryptoSuite());
+			this.getCryptoSuite().setCryptoKeyStore(Client.newCryptoKeyStore());
+		} else {
+			<span class="missing-if-branch" title="else path not taken" >E</span>if (this.getCryptoSuite()._cryptoKeyStore) logger.debug('cryptoSuite has a cryptoKeyStore');
+			else <span class="cstat-no" title="statement not covered" >logger.debug('cryptoSuite does not have a cryptoKeyStore');</span>
+		}
+&nbsp;
+		var self = this;
+		return new Promise((resolve, reject) =&gt; {
+			// need to load private key and pre-enrolled certificate from files based on the MSP
+			// root MSP config directory structure:
+			// &lt;config&gt;
+			//    \_ keystore
+			//       \_ admin.pem  &lt;&lt;== this is the private key saved in PEM file
+			//    \_ signcerts
+			//       \_ admin.pem  &lt;&lt;== this is the signed certificate saved in PEM file
+&nbsp;
+			// first load the private key and save in the BCCSP's key store
+			var promise, member, importedKey;
+&nbsp;
+			if (opts.cryptoContent.privateKey) {
+				promise = readFile(opts.cryptoContent.privateKey);
+			} else {
+				promise = Promise.resolve(opts.cryptoContent.privateKeyPEM);
+			}
+			promise.then((data) =&gt; {
+				if (data) {
+					logger.debug('then privateKeyPEM data');
+					var opt1;
+					<span class="missing-if-branch" title="else path not taken" >E</span>if (self.getCryptoSuite()._cryptoKeyStore) {
+						opt1 = {ephemeral: false};
+					} else {
+<span class="cstat-no" title="statement not covered" >						opt1 = {ephemeral: true};</span>
+					}
+					return self.getCryptoSuite().importKey(data.toString(), opt1);
+				} else {
+					throw new Error('failed to load private key data');
+				}
+			}).then((key) =&gt; {
+				logger.debug('then key');
+				importedKey = key;
+				// next save the certificate in a serialized user enrollment in the state store
+				if (opts.cryptoContent.signedCert) {
+					promise = readFile(opts.cryptoContent.signedCert);
+				} else {
+					promise = Promise.resolve(opts.cryptoContent.signedCertPEM);
+				}
+				return promise;
+			}).then((data) =&gt; {
+				logger.debug('then signedCertPEM data');
+				member = new User(opts.username);
+				member.setCryptoSuite(self.getCryptoSuite());
+				return member.setEnrollment(importedKey, data.toString(), opts.mspid);
+			}).then(() =&gt; {
+				logger.debug('then setUserContext');
+				return self.setUserContext(member);
+			}, (err) =&gt; {
+				logger.debug('error during setUserContext...');
+				logger.error(err.stack ? err.stack : <span class="branch-1 cbranch-no" title="branch not covered" >err)</span>;
+				return reject(err);
+			}).then((user) =&gt; {
+				logger.debug('then user');
+				return resolve(user);
+			}).catch((err) =&gt; {
+				logger.error(err.stack ? err.stack : <span class="branch-1 cbranch-no" title="branch not covered" >err)</span>;
+				return reject(new Error('Failed to load key or certificate and save to local stores.'));
+			});
+		});
+	}
+};
+&nbsp;
+function readFile(path) {
+	return new Promise(function(resolve, reject) {
+		fs.readFile(path, 'utf8', function (err, data) {
+			<span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >				if (err.code !== 'ENOENT') {</span>
+<span class="cstat-no" title="statement not covered" >					return reject(err);</span>
+				} else {
+<span class="cstat-no" title="statement not covered" >					return resolve(null);</span>
+				}
+			}
+			return resolve(data);
+		});
+	});
+}
+&nbsp;
+// internal utility method to get the chaincodePackage data in bytes
+/**
+ * @private
+ */
+function _getChaincodePackageData(request, devMode) {
+	return new Promise((resolve,reject) =&gt; {
+		if (!request.chaincodePackage) {
+			resolve(Packager.package(request.chaincodePath, request.chaincodeType, devMode));
+		} else {
+			resolve(request.chaincodePackage);
+		}
+	});
+}
+&nbsp;
+// internal utility method to check and convert any strings to protobuf signatures
+function _stringToSignature(string_signatures) {
+	var signatures = [];
+	for(var i in string_signatures) {
+		let signature = string_signatures[i];
+		// check for properties rather than object type
+		if(signature &amp;&amp; signature.signature_header &amp;&amp; signature.signature) {
+			logger.debug('_stringToSignature - signature is protobuf');
+		}
+		else {
+			logger.debug('_stringToSignature - signature is string');
+			var signature_bytes = Buffer.from(signature, 'hex');
+			signature = _configtxProto.ConfigSignature.decode(signature_bytes);
+		}
+		signatures.push(signature);
+	}
+	return signatures;
+}
+&nbsp;
+module.exports = Client;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 06 2017 17:25:54 GMT+0530 (IST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

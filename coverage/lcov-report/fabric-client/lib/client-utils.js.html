@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for fabric-client/lib/client-utils.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">fabric-client/lib/</a> client-utils.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">94.5% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>103/109</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">71.88% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>23/32</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>15/15</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">94.5% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>103/109</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">31×</span>
+<span class="cline-any cline-yes">31×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">31×</span>
+<span class="cline-any cline-yes">31×</span>
+<span class="cline-any cline-yes">31×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">68×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">47×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">43×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"> /**
+ * Copyright 2016 IBM All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+&nbsp;
+'use strict';
+&nbsp;
+var util = require('util');
+var winston = require('winston');
+var fs = require('fs-extra');
+var crypto = require('crypto');
+var path = require('path');
+var os = require('os');
+var settle = require('promise-settle');
+var utils = require('./utils.js');
+var logger = utils.getLogger('client-utils.js');
+var Config = require('./Config.js');
+&nbsp;
+var grpc = require('grpc');
+var _commonProto = grpc.load(__dirname + '/protos/common/common.proto').common;
+var _proposalProto = grpc.load(__dirname + '/protos/peer/proposal.proto').protos;
+var _ccProto = grpc.load(__dirname + '/protos/peer/chaincode.proto').protos;
+var _timestampProto = grpc.load(__dirname + '/protos/google/protobuf/timestamp.proto').google.protobuf;
+&nbsp;
+/*
+ * This function will build the proposal
+ */
+module.exports.buildProposal = function(invokeSpec, header, transientMap) {
+	// construct the ChaincodeInvocationSpec
+	let cciSpec = new _ccProto.ChaincodeInvocationSpec();
+	cciSpec.setChaincodeSpec(invokeSpec);
+&nbsp;
+	let cc_payload = new _proposalProto.ChaincodeProposalPayload();
+	cc_payload.setInput(cciSpec.toBuffer());
+&nbsp;
+	if (typeof transientMap === 'object') {
+		logger.debug('buildProposal - adding in transientMap %j',transientMap);
+		cc_payload.setTransientMap(transientMap);
+	}
+	else {
+		logger.debug('buildProposal - not adding a transientMap');
+	}
+&nbsp;
+	// proposal -- will switch to building the proposal once the signProposal is used
+	let proposal = new _proposalProto.Proposal();
+	proposal.setHeader(header.toBuffer());
+	proposal.setPayload(cc_payload.toBuffer()); // chaincode proposal payload
+&nbsp;
+	return proposal;
+};
+&nbsp;
+/*
+ * This function will return one Promise when sending a proposal to many peers
+ */
+module.exports.sendPeersProposal = function(peers, proposal) {
+	<span class="missing-if-branch" title="if path not taken" >I</span>if(!Array.isArray(peers)) {
+<span class="cstat-no" title="statement not covered" >		peers = [peers];</span>
+	}
+	// make function to return an individual promise
+	var fn = function(peer) {
+		return new Promise(function(resolve,reject) {
+			peer.sendProposal(proposal)
+			.then(
+				function(result) {
+					resolve(result);
+				}
+			).catch(
+				function(err) {
+					logger.error('sendPeersProposal - Promise is rejected: %s',err.stack ? err.stack : <span class="branch-1 cbranch-no" title="branch not covered" >err)</span>;
+					return reject(err);
+				}
+			);
+		});
+	};
+	// create array of promises mapping peers array to peer parameter
+	// settle all the promises and return array of responses
+	var promises = peers.map(fn);
+	var responses = [];
+	return settle(promises)
+	  .then(function (results) {
+		results.forEach(function (result) {
+		  if (result.isFulfilled()) {
+			logger.debug('sendPeersProposal - Promise is fulfilled: '+result.value());
+			responses.push(result.value());
+		  } else {
+			logger.debug('sendPeersProposal - Promise is rejected: '+result.reason());
+			<span class="missing-if-branch" title="else path not taken" >E</span>if(result.reason() instanceof Error) {
+				responses.push(result.reason());
+			}
+			else {
+<span class="cstat-no" title="statement not covered" >				responses.push(new Error(result.reason()));</span>
+			}
+		  }
+		});
+		return responses;
+	});
+};
+&nbsp;
+/*
+ * This function will sign the proposal
+ */
+module.exports.signProposal = function(signingIdentity, proposal) {
+	let proposal_bytes = proposal.toBuffer();
+	// sign the proposal
+	let sig = signingIdentity.sign(proposal_bytes);
+	let signature = Buffer.from(sig);
+&nbsp;
+	// build manually for now
+	let signedProposal = {
+		signature :  signature,
+		proposal_bytes : proposal_bytes
+	};
+	return signedProposal;
+};
+&nbsp;
+/*
+ * This function will build a common channel header
+ */
+module.exports.buildChannelHeader = function(type, channel_id, tx_id, epoch, chaincode_id, time_stamp) {
+	logger.debug('buildChannelHeader - type %s channel_id %s tx_id %d epoch % chaincode_id %s',
+			type, channel_id, tx_id, epoch, chaincode_id);
+	var channelHeader = new _commonProto.ChannelHeader();
+	channelHeader.setType(type); // int32
+	channelHeader.setVersion(1); // int32
+	<span class="missing-if-branch" title="else path not taken" >E</span>if(!time_stamp) {
+		time_stamp = module.exports.buildCurrentTimestamp();
+	}
+	channelHeader.setTimestamp(time_stamp); // google.protobuf.Timestamp
+	channelHeader.setChannelId(channel_id); //string
+	channelHeader.setTxId(tx_id.toString()); //string
+	<span class="missing-if-branch" title="if path not taken" >I</span>if(epoch) {
+<span class="cstat-no" title="statement not covered" >		channelHeader.setEpoch(epoch); </span>// uint64
+	}
+	if(chaincode_id) {
+		let chaincodeID = new _ccProto.ChaincodeID();
+		chaincodeID.setName(chaincode_id);
+&nbsp;
+		let headerExt = new _proposalProto.ChaincodeHeaderExtension();
+		headerExt.setChaincodeId(chaincodeID);
+&nbsp;
+		channelHeader.setExtension(headerExt.toBuffer());
+	}
+	return channelHeader;
+};
+&nbsp;
+/*
+ * This function will build the common header
+ */
+module.exports.buildHeader = function(creator, channelHeader, nonce) {
+	let signatureHeader = new _commonProto.SignatureHeader();
+	signatureHeader.setCreator(creator.serialize());
+	signatureHeader.setNonce(nonce);
+&nbsp;
+	let header = new _commonProto.Header();
+	header.setSignatureHeader(signatureHeader.toBuffer());
+	header.setChannelHeader(channelHeader.toBuffer());
+&nbsp;
+	return header;
+};
+&nbsp;
+module.exports.checkProposalRequest = function(request, skip) {
+	var errorMsg = null;
+&nbsp;
+	if(request) {
+		if(!request.chaincodeId) {
+			errorMsg = 'Missing "chaincodeId" parameter in the proposal request';
+		} else if(!request.txId &amp;&amp; !skip) {
+			errorMsg = 'Missing "txId" parameter in the proposal request';
+		}
+	} else {
+		errorMsg = 'Missing input request object on the proposal request';
+	}
+	return errorMsg;
+};
+&nbsp;
+module.exports.checkInstallRequest = function(request) {
+	var errorMsg = null;
+&nbsp;
+	<span class="missing-if-branch" title="else path not taken" >E</span>if (request) {
+		if(!request.chaincodeVersion) {
+			errorMsg = 'Missing "chaincodeVersion" parameter in the proposal request';
+		}
+	} else {
+<span class="cstat-no" title="statement not covered" >		errorMsg = 'Missing input request object on the proposal request';</span>
+	}
+	return errorMsg;
+};
+&nbsp;
+module.exports.translateCCType = function(type) {
+	switch (type) {
+<span class="branch-0 cbranch-no" title="branch not covered" >	case 'golang':</span>
+	default:
+		return _ccProto.ChaincodeSpec.Type.GOLANG;
+<span class="branch-2 cbranch-no" title="branch not covered" >	case 'car':</span>
+<span class="cstat-no" title="statement not covered" >		return _ccProto.ChaincodeSpec.Type.CAR;</span>
+<span class="branch-3 cbranch-no" title="branch not covered" >	case 'java':</span>
+<span class="cstat-no" title="statement not covered" >		return _ccProto.ChaincodeSpec.Type.JAVA;</span>
+	}
+};
+&nbsp;
+/*
+ * This function will create a timestamp from the current time
+ */
+module.exports.buildCurrentTimestamp = function() {
+	var now = new Date();
+	var timestamp = new _timestampProto.Timestamp();
+	timestamp.setSeconds(now.getTime() / 1000);
+	timestamp.setNanos((now.getTime() % 1000) * 1000000);
+	return timestamp;
+};</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 06 2017 17:25:54 GMT+0530 (IST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

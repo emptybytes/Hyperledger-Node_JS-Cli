@@ -1,0 +1,3764 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for fabric-client/lib/BlockDecoder.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">fabric-client/lib/</a> BlockDecoder.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">67.03% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>368/549</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">45.74% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>43/94</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">68.63% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>35/51</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">67.47% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>365/541</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689
+690
+691
+692
+693
+694
+695
+696
+697
+698
+699
+700
+701
+702
+703
+704
+705
+706
+707
+708
+709
+710
+711
+712
+713
+714
+715
+716
+717
+718
+719
+720
+721
+722
+723
+724
+725
+726
+727
+728
+729
+730
+731
+732
+733
+734
+735
+736
+737
+738
+739
+740
+741
+742
+743
+744
+745
+746
+747
+748
+749
+750
+751
+752
+753
+754
+755
+756
+757
+758
+759
+760
+761
+762
+763
+764
+765
+766
+767
+768
+769
+770
+771
+772
+773
+774
+775
+776
+777
+778
+779
+780
+781
+782
+783
+784
+785
+786
+787
+788
+789
+790
+791
+792
+793
+794
+795
+796
+797
+798
+799
+800
+801
+802
+803
+804
+805
+806
+807
+808
+809
+810
+811
+812
+813
+814
+815
+816
+817
+818
+819
+820
+821
+822
+823
+824
+825
+826
+827
+828
+829
+830
+831
+832
+833
+834
+835
+836
+837
+838
+839
+840
+841
+842
+843
+844
+845
+846
+847
+848
+849
+850
+851
+852
+853
+854
+855
+856
+857
+858
+859
+860
+861
+862
+863
+864
+865
+866
+867
+868
+869
+870
+871
+872
+873
+874
+875
+876
+877
+878
+879
+880
+881
+882
+883
+884
+885
+886
+887
+888
+889
+890
+891
+892
+893
+894
+895
+896
+897
+898
+899
+900
+901
+902
+903
+904
+905
+906
+907
+908
+909
+910
+911
+912
+913
+914
+915
+916
+917
+918
+919
+920
+921
+922
+923
+924
+925
+926
+927
+928
+929
+930
+931
+932
+933
+934
+935
+936
+937
+938
+939
+940
+941
+942
+943
+944
+945
+946
+947
+948
+949
+950
+951
+952
+953
+954
+955
+956
+957
+958
+959
+960
+961
+962
+963
+964
+965
+966
+967
+968
+969
+970
+971
+972
+973
+974
+975
+976
+977
+978
+979
+980
+981
+982
+983
+984
+985
+986
+987
+988
+989
+990
+991
+992
+993
+994
+995
+996
+997
+998
+999
+1000
+1001
+1002
+1003
+1004
+1005
+1006
+1007
+1008
+1009
+1010
+1011
+1012
+1013
+1014
+1015
+1016
+1017
+1018
+1019
+1020
+1021
+1022
+1023
+1024
+1025
+1026
+1027
+1028
+1029
+1030
+1031
+1032
+1033
+1034
+1035
+1036
+1037
+1038
+1039
+1040
+1041
+1042
+1043
+1044
+1045
+1046
+1047
+1048
+1049
+1050
+1051
+1052
+1053
+1054
+1055
+1056
+1057
+1058
+1059
+1060
+1061
+1062
+1063
+1064
+1065
+1066
+1067
+1068
+1069
+1070
+1071
+1072
+1073
+1074
+1075
+1076
+1077
+1078
+1079
+1080
+1081
+1082
+1083
+1084
+1085
+1086
+1087
+1088
+1089
+1090
+1091
+1092
+1093
+1094
+1095
+1096
+1097
+1098
+1099
+1100
+1101
+1102
+1103
+1104
+1105
+1106
+1107
+1108
+1109
+1110
+1111
+1112
+1113
+1114
+1115
+1116
+1117
+1118
+1119
+1120
+1121
+1122
+1123
+1124
+1125
+1126
+1127
+1128
+1129
+1130
+1131
+1132
+1133
+1134
+1135
+1136
+1137
+1138
+1139
+1140
+1141
+1142
+1143
+1144
+1145
+1146
+1147
+1148
+1149
+1150
+1151
+1152
+1153
+1154
+1155
+1156
+1157
+1158
+1159
+1160
+1161
+1162
+1163
+1164
+1165
+1166
+1167
+1168
+1169
+1170
+1171
+1172
+1173
+1174
+1175
+1176
+1177
+1178
+1179
+1180
+1181
+1182
+1183
+1184
+1185
+1186
+1187
+1188
+1189
+1190
+1191
+1192
+1193
+1194
+1195
+1196
+1197
+1198
+1199
+1200
+1201
+1202
+1203
+1204
+1205
+1206
+1207
+1208
+1209
+1210
+1211
+1212
+1213
+1214
+1215
+1216
+1217
+1218
+1219
+1220
+1221
+1222
+1223
+1224
+1225
+1226
+1227
+1228
+1229
+1230
+1231
+1232
+1233
+1234</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">76×</span>
+<span class="cline-any cline-yes">76×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">76×</span>
+<span class="cline-any cline-yes">76×</span>
+<span class="cline-any cline-yes">76×</span>
+<span class="cline-any cline-yes">76×</span>
+<span class="cline-any cline-yes">76×</span>
+<span class="cline-any cline-yes">76×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">76×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-yes">126×</span>
+<span class="cline-any cline-yes">126×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">128×</span>
+<span class="cline-any cline-yes">128×</span>
+<span class="cline-any cline-yes">128×</span>
+<span class="cline-any cline-yes">128×</span>
+<span class="cline-any cline-yes">128×</span>
+<span class="cline-any cline-yes">128×</span>
+<span class="cline-any cline-yes">128×</span>
+<span class="cline-any cline-yes">128×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">72×</span>
+<span class="cline-any cline-yes">72×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">127×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">72×</span>
+<span class="cline-any cline-yes">72×</span>
+<span class="cline-any cline-yes">72×</span>
+<span class="cline-any cline-yes">72×</span>
+<span class="cline-any cline-yes">72×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">108×</span>
+<span class="cline-any cline-yes">108×</span>
+<span class="cline-any cline-yes">108×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">108×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-yes">42×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">54×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">72×</span>
+<span class="cline-any cline-yes">72×</span>
+<span class="cline-any cline-yes">78×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">72×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">346×</span>
+<span class="cline-any cline-yes">346×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">346×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*
+ Copyright 2017 IBM All Rights Reserved.
+&nbsp;
+ Licensed under the Apache License, Version 2.0 (the 'License');
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+&nbsp;
+	  http://www.apache.org/licenses/LICENSE-2.0
+&nbsp;
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an 'AS IS' BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
+&nbsp;
+'use strict';
+&nbsp;
+var grpc = require('grpc');
+var util = require('util');
+var path = require('path');
+var utils = require('./utils.js');
+var logger = utils.getLogger('BlockDecoder.js');
+&nbsp;
+var _ccProto = grpc.load(__dirname + '/protos/peer/chaincode.proto').protos;
+var _ccEventProto = grpc.load(__dirname + '/protos/peer/chaincode_event.proto').protos;
+var _transProto = grpc.load(__dirname + '/protos/peer/transaction.proto').protos;
+var _proposalProto = grpc.load(__dirname + '/protos/peer/proposal.proto').protos;
+var _responseProto = grpc.load(__dirname + '/protos/peer/proposal_response.proto').protos;
+var _queryProto = grpc.load(__dirname + '/protos/peer/query.proto').protos;
+var _peerConfigurationProto = grpc.load(__dirname + '/protos/peer/configuration.proto').protos;
+var _mspPrProto = grpc.load(__dirname + '/protos/msp/msp_principal.proto').common;
+var _commonProto = grpc.load(__dirname + '/protos/common/common.proto').common;
+var _configtxProto = grpc.load(__dirname + '/protos/common/configtx.proto').common;
+var _policiesProto = grpc.load(__dirname + '/protos/common/policies.proto').common;
+var _ledgerProto = grpc.load(__dirname + '/protos/common/ledger.proto').common;
+var _commonConfigurationProto = grpc.load(__dirname + '/protos/common/configuration.proto').common;
+var _ordererConfigurationProto = grpc.load(__dirname + '/protos/orderer/configuration.proto').orderer;
+var _abProto = grpc.load(__dirname + '/protos/orderer/ab.proto').orderer;
+var _mspConfigProto = grpc.load(__dirname + '/protos/msp/msp_config.proto').msp;
+var _timestampProto = grpc.load(__dirname + '/protos/google/protobuf/timestamp.proto').google.protobuf;
+var _identityProto = grpc.load(path.join(__dirname, '/protos/msp/identities.proto')).msp;
+var _rwsetProto = grpc.load(path.join(__dirname, '/protos/ledger/rwset/rwset.proto')).rwset;
+var _kv_rwsetProto = grpc.load(path.join(__dirname, '/protos/ledger/rwset/kvrwset/kv_rwset.proto')).kvrwset;
+&nbsp;
+&nbsp;
+/**
+ * Utility class to convert a grpc protobuf encoded byte array into a pure JSON object representing
+ * a hyperledger fabric `Block`.
+ * @class
+ */
+var BlockDecoder = class {
+	/**
+	 * The JSON representation of a GRPC message "Block".
+	 * &lt;br&gt;A Block will contain the configuration of the channel or
+	 * transactions on the channel. The description area below shows the
+	 * properties of the "Block" object. When the property name does not have a
+	 * data type next to it (e.g. -- {int}) then assume it is an object and
+	 * the indented names below it are it's properties. Complex properties
+	 * shown within the description area are listed under the "Properties"
+	 * section (e.g. {Header}). Use the links under the "Type" column
+	 * to see the description of that object type.
+	 * &lt;br&gt;&lt;br&gt;When assigning the results of a block
+	 * query or block event to a variable called &lt;code&gt;block&lt;/code&gt; for example,
+	 * then to get the block number use
+	 * &lt;br&gt;&lt;code&gt;var block_num = block.header.number;&lt;/code&gt;
+	 * &lt;br&gt;or to see the first transaction id in the block use
+	 * &lt;br&gt;&lt;code&gt; var tx_id = block.data.data[0].payload.header.channel_header.tx_id;&lt;/code&gt;
+	 * &lt;br&gt;&lt;br&gt;A "Block" will have the following JSON layout.
+&lt;br&gt;&lt;pre&gt;
+header
+   number -- {int}
+   previous_hash -- {byte}
+   data_hash -- {byte}
+data
+   data -- [array]
+      signature -- {byte}
+      payload
+         header -- {Header}
+         data -- {Config | Transaction}
+metadata
+   metadata -- [array] #each array item has it's own layout
+      [0] #SIGNATURES
+         signatures -- [array]
+            signature_header
+               creator
+                  Mspid -- {string}
+                  IdBytes -- {byte}
+               nonce -- {byte}
+            signature -- {byte}
+      [1] #LAST_CONFIG
+         value
+            index -- {number}
+         signatures -- [array]
+            signature_header
+               creator
+                  Mspid -- {string}
+                  IdBytes -- {byte}
+               nonce -- {byte}
+            signature -- {byte}
+      [2] #TRANSACTIONS_FILTER
+          [int] #see TxValidationCode in proto/peer/transaction.proto
+ &lt;/pre&gt;
+	 * @typedef {Object} Block
+	 * @property {Header} header The header of the block
+	 * @property {Config | Transaction} data The data bytes will be based on the block.header.channel_header.type
+	 * @see protos/common/common.proto
+	 */
+&nbsp;
+	/**
+	 * The JSON representation of a GRPC message "Header".
+	 * &lt;br&gt;&lt;br&gt;A "Header" will have the following JSON layout.
+&lt;br&gt;&lt;pre&gt;
+   channel_header
+      type -- {string}
+      version -- {int}
+      timestamp -- {time}
+      channel_id -- {string}
+      tx_id -- {string}
+      epoch -- {int}
+   signature_header
+      creator
+         Mspid -- {string}
+            IdBytes -- {byte}
+            nonce -- {string}
+&lt;/pre&gt;
+	 * @typedef {Object} Header
+	 * @see protos/common/common.proto
+	 */
+&nbsp;
+	/**
+	 * The JSON representation of a GRPC message "Config".
+	 * &lt;br&gt;The config object will contain the current channel configuration.
+	 * &lt;br&gt;&lt;br&gt;A "Config" will have the following JSON layout.
+&lt;br&gt;&lt;pre&gt;
+config
+   sequence -- {int}
+   channel_group -- {ConfigGroup}
+last_update
+   signature -- {byte}
+   payload
+      header -- {Header}
+      data -- {ConfigUpdate}
+&lt;/pre&gt;
+	 * @typedef {Object} Config
+	 * @property {Header} header
+	 * @property {ConfigGroup} channel_group
+	 * @property {ConfigUpdate} data
+	 * @see protos/common/common.proto
+	 */
+&nbsp;
+	/**
+	 * The JSON representation of a GRPC message "Transaction"
+	 * &lt;br&gt;&lt;br&gt;A "Transaction" will have the following JSON layout.
+&lt;br&gt;&lt;pre&gt;
+actions
+   chaincode_proposal_payload
+      input -- {byte}
+   action
+      proposal_response_payload
+         proposal_hash -- {byte}
+         extension
+            results
+               data_model -- {int}
+               ns_rwset -- [array]
+                  namespace -- {string}
+                  rwset
+                     reads -- [array]
+                        key -- {string}
+                        version
+                           block_num -- {number}
+                           tx_num -- {number}
+                     range_queries_info -- [array]
+                     writes -- [array]
+                        key -- {string}
+                        is_delete -- {boolean}
+                        value -- {string}
+            events
+               chaincode_id --  {string}
+               tx_id -- {string}
+               event_name -- {string}
+               payload -- {byte}
+            response
+               status -- {int}
+               message -- {string}
+               payload -- {byte}
+      endorsements -- [array]
+         endorser
+            Mspid -- {string]
+            IdBytes -- {string}
+         signature -- {byte}
+&lt;/pre&gt;
+	 * @typedef {Object} Transaction
+	 * @see protos/peer/transaction.proto
+	 */
+&nbsp;
+	/**
+	 * The JSON representation of a GRPC message "ConfigUpdate".
+	 * &lt;br&gt;&lt;br&gt;A "ConfigUpdate" will have the following JSON layout.
+&lt;br&gt;&lt;pre&gt;
+   channel_id -- {string}
+   read_set -- {ConfigGroup}
+   write_set -- {ConfigGroup}
+   signatures -- [array]
+      signature_header
+         creator
+            Mspid -- {string}
+            Idbytes -- {byte}
+         signature -- {byte}
+&lt;/pre&gt;
+	 * @typedef {Object} ConfigUpdate
+	 * @property {ConfigGroup} read_set A top level GRPC message "ConfigGroup" that
+	 *           represents the current version numbers of the all configuration items
+	 *           being updated
+	 * @property {ConfigGroup} write_set A top level GRPC message "ConfigGroup that
+	 *           represents the all configuration items being updated. Must have a
+	 *           version number one greater than the version number of the same item
+	 *           in the read_set along with the new value.
+	 * @see protos/common/configtx.proto
+	 */
+&nbsp;
+	/**
+	 * The JSON representation of a GRPC message "ConfigGroup".
+	 * &lt;br&gt;The "ConfigGroup" described here is one that represents the
+	 * whole configuration of the channel. A "ConfigGroup" object
+	 * is used to describe the current configuration and it is also
+	 * used to describe the updates to a configuration.
+	 * Only those fields being updated will be present when used to describe
+	 * a configuration update.
+	 * &lt;br&gt;&lt;br&gt;A channel level "ConfigGroup" will have the following JSON layout.
+&lt;br&gt;&lt;pre&gt;
+      version -- {int}
+      mod_policy -- {string}
+      groups
+         Orderer
+            version -- {int}
+            groups -- [array]
+               &amp;ltorderer&amp;gt -- {Organization}
+            values
+               ConsensusType
+                  version -- {int}
+                  mod_policy -- {string}
+                  value
+                     type -- {string}
+               BatchSize
+                  version -- {int}
+                  mod_policy -- {string}
+                  value
+                     maxMessageCount -- {int}
+                     absoluteMaxBytes -- {int}
+                     preferredMaxBytes -- {int}
+               BatchTimeout
+                  version -- {int}
+                  mod_policy -- {string}
+                  value
+                     timeout -- {duration}
+               ChannelRestrictions
+                  version -- {int}
+                  mod_policy -- {string}
+                  value
+                     max_count -- {int}
+            policies
+               Admins
+                  version -- {int}
+                  mod_policy -- {string}
+                  policy -- {ImplicitMetaPolicy}
+               Writers
+                  version -- {int}
+                  mod_policy -- {string}
+                  policy -- {ImplicitMetaPolicy}
+               Readers
+                  version -- {int}
+                  mod_policy -- {string}
+                  policy -- {ImplicitMetaPolicy}
+               BlockValidation
+                  version -- {int}
+                  mod_policy -- {string}
+                  policy -- {SignaturePolicy}
+         Application
+            version -- {int}
+            groups
+               &amp;ltpeer&amp;gt -- {Organization}
+            values
+            policies
+               Admins -- {ImplicitMetaPolicy}
+                  version -- {int}
+                  mod_policy -- {string}
+                  policy -- {ImplicitMetaPolicy}
+               Writers -- {ImplicitMetaPolicy}
+                  version -- {int}
+                  mod_policy -- {string}
+                  policy -- {ImplicitMetaPolicy}
+               Readers -- {ImplicitMetaPolicy}
+                  version -- {int}
+                  mod_policy -- {string}
+                  policy -- {ImplicitMetaPolicy}
+      values
+         OrdererAddresses
+            version -- {int}
+            mod_policy -- {string}
+            value
+               addresses -- [array]
+                   {string - host:port}
+         HashingAlgorithm
+            version -- {int}
+            mod_policy -- {string}
+            value
+               name -- {string}
+         BlockDataHashingStructure
+            version -- {int}
+            mod_policy -- {string}
+            value
+               width -- {int}
+         Consortium
+            version -- {int}
+            mod_policy -- {string}
+            value
+               name -- {string}
+&lt;/pre&gt;
+	 * @typedef {Object} ConfigGroup
+	 * @property {Organization} &amp;ltorderer&amp;gt These are the defined "Orderer"s on the network
+	 * @property {Organization} &amp;ltpeer&amp;gt These are the defined "Peer"s on the network
+	 * @property {ImplicitMetaPolicy} policy These policies point to other policies
+	 * @property {SignaturePolicy} policy
+	 * @see protos/common/configtx.proto
+	 */
+&nbsp;
+	/**
+	 * The JSON representation of a GRPC message "ConfigGroup".
+	 * &lt;br&gt;The "ConfigGroup" described here is one that a single
+	 * Organization on the Channel.
+	 * &lt;br&gt;&lt;br&gt;A organizational "ConfigGroup" will have the following JSON layout.
+&lt;br&gt;&lt;pre&gt;
+version -- {int}
+mod_policy -- {string}
+groups
+values
+   MSP
+      version -- {int}
+      mod_policy -- {string}
+      value
+         type -- {int}
+         config
+            name -- {string}
+            root_certs -- [array]
+                {string}
+            intermediate_certs -- [array]
+                {string}
+            admins -- [array]
+                {string}
+            revocation_list -- [array]
+                {string}
+            signing_identity -- {byte}
+            organizational_unit_identifiers -- [array]
+                {string}
+policies
+   Admins
+      version -- {int}
+      mod_policy -- {string}
+      policy -- {SignaturePolicy}
+   Writers
+      version -- {int}
+      mod_policy -- {string}
+      policy -- {SignaturePolicy}
+   Readers
+      version -- {int}
+      mod_policy -- {string}
+      policy -- {SignaturePolicy}
+&lt;/pre&gt;
+	 * @typedef {Object} Organization
+	 * @property {SignaturePolicy} policy These are the polices that have been pointed to by the implicit policies
+	 * @see protos/common/configtx.proto
+	 */
+&nbsp;
+	/**
+	 * The JSON representation of a GRPC message "Policy" that are
+	 * of type "ImplicitMetaPolicy".
+	 * &lt;br&gt;&lt;br&gt;A "ImplicitMetaPolicy" will have the following JSON layout.
+&lt;br&gt;&lt;pre&gt;
+type -- IMPLICIT_META
+policy
+   policy
+      sub_policy -- {string}
+      rule -- ANY | ALL | MAJORITY
+&lt;/pre&gt;
+	 * @typedef {Object} ImplicitMetaPolicy
+	 * @see protos/common/policies
+	 */
+&nbsp;
+	/**
+	 * The JSON representation of a GRPC message "Policy" that are
+	 * of type "SignaturePolicy".
+	 * &lt;br&gt;&lt;br&gt;A "SignaturePolicy" will have the following JSON layout.
+&lt;br&gt;&lt;pre&gt;
+type -- SIGNATURE
+policy
+   policy
+      Type -- n_out_of
+      n_out_of
+         N -- {int}
+         policies -- [array]
+            Type -- signed_by
+            signed_by -- {int}
+      identities -- [array]
+         principal_classification -- {int}
+         msp_identifier -- {string}
+         Role -- MEMBER | ADMIN
+&lt;/pre&gt;
+	 * @typedef {Object} SignaturePolicy
+	 * @see protos/common/policies
+	 */
+&nbsp;
+	/**
+	 * Constructs a JSON object containing all decoded values from the
+	 * grpc encoded `Block` bytes
+	 *
+	 * @param {byte[]} block_bytes - The encode bytes of a hyperledger fabric message Block
+	 * @returns {Block} The JSON representation of the Protobuf common.Block
+	 * @see /protos/common/common.proto
+	 */
+	static decode(block_bytes) {
+		if(!block_bytes || !(block_bytes instanceof Buffer)) {
+			throw new Error('Block input data is not a byte buffer');
+		}
+		var block = {};
+		try {
+			var proto_block = _commonProto.Block.decode(block_bytes);
+			block.header = decodeBlockHeader(proto_block.getHeader());
+			block.data = decodeBlockData(proto_block.getData());
+			block.metadata = decodeBlockMetaData(proto_block.getMetadata());
+		}
+		catch(error) {
+<span class="cstat-no" title="statement not covered" >			logger.error('decode - ::' + error.stack ? error.stack : error);</span>
+<span class="cstat-no" title="statement not covered" >			throw error;</span>
+		}
+&nbsp;
+		return block;
+	};
+&nbsp;
+	/**
+	 * Constructs a JSON object containing all decoded values from the
+	 * grpc encoded `Block` object
+	 *
+	 * @param {Object} block - a Protobuf common.Block object
+	 * @returns {Block} The JSON representation of the Protobuf common.Block
+	 * @see /protos/common/common.proto
+	 */
+	static decodeBlock(proto_block) {
+		<span class="missing-if-branch" title="if path not taken" >I</span>if(!proto_block) {
+<span class="cstat-no" title="statement not covered" >			throw new Error('Block input data is not a protobuf Block');</span>
+		}
+		var block = {};
+		try {
+			block.header = {
+				number : proto_block.header.number,
+				previous_hash : proto_block.header.previous_hash.toString('hex'),
+				data_hash : proto_block.header.data_hash.toString('hex')
+			};
+			block.data = decodeBlockData(proto_block.data, true);
+			block.metadata = decodeBlockMetaData(proto_block.metadata);
+		}
+		catch(error) {
+<span class="cstat-no" title="statement not covered" >			logger.error('decode - ::' + error.stack ? error.stack : error);</span>
+<span class="cstat-no" title="statement not covered" >			throw error;</span>
+		}
+&nbsp;
+		return block;
+	};
+&nbsp;
+	/**
+	 * Constructs a JSON object containing all decoded values from the
+	 * grpc encoded `Transaction` bytes
+	 *
+	 * @param {byte[]} processed_transaction_bytes - The encode bytes of a hyperledger
+	 *        fabric message ProcessedTransaction
+	 * @returns {Object} The JSON representation of the Protobuf transaction.ProcessedTransaction
+	 * @see /protos/peer/transaction.proto
+	 */
+	static decodeTransaction<span class="fstat-no" title="function not covered" >(processed_transaction_bytes) {</span>
+<span class="cstat-no" title="statement not covered" >		if(!(processed_transaction_bytes instanceof Buffer)) {</span>
+<span class="cstat-no" title="statement not covered" >			throw new Error('Proccesed transaction data is not a byte buffer');</span>
+		}
+<span class="cstat-no" title="statement not covered" >		var processed_transaction = {};</span>
+<span class="cstat-no" title="statement not covered" >		var proto_processed_transaction = _transProto.ProcessedTransaction.decode(processed_transaction_bytes);</span>
+<span class="cstat-no" title="statement not covered" >		processed_transaction.validationCode = proto_processed_transaction.getValidationCode();</span>
+<span class="cstat-no" title="statement not covered" >		processed_transaction.transactionEnvelope</span>
+			= decodeBlockDataEnvelope(proto_processed_transaction.getTransactionEnvelope());
+<span class="cstat-no" title="statement not covered" >		return processed_transaction;</span>
+	}
+};
+&nbsp;
+function decodeBlockHeader(proto_block_header) {
+	var block_header = {};
+	block_header.number = proto_block_header.getNumber();
+	block_header.previous_hash = proto_block_header.getPreviousHash().toBuffer().toString('hex');
+	block_header.data_hash = proto_block_header.getDataHash().toBuffer().toString('hex');
+&nbsp;
+	return block_header;
+};
+&nbsp;
+function decodeBlockData(proto_block_data, not_proto) {
+	var data = {};
+	data.data = [];
+	for(var i in proto_block_data.data) {
+		var proto_envelope = null;
+		if(not_proto) {
+			proto_envelope = _commonProto.Envelope.decode(proto_block_data.data[i]);
+		}
+		else {
+			proto_envelope = _commonProto.Envelope.decode(proto_block_data.data[i].toBuffer());
+		}
+		var envelope = decodeBlockDataEnvelope(proto_envelope);
+		data.data.push(envelope);
+	}
+&nbsp;
+	return data;
+};
+&nbsp;
+function decodeBlockMetaData(proto_block_metadata) {
+	var metadata = {};
+	metadata.metadata = [];
+	<span class="missing-if-branch" title="else path not taken" >E</span>if(proto_block_metadata &amp;&amp; proto_block_metadata.metadata) {
+		var signatures = decodeMetadataSignatures(proto_block_metadata.metadata[0]);
+		metadata.metadata.push(signatures);
+&nbsp;
+		var last_config = decodeLastConfigSequenceNumber(proto_block_metadata.metadata[1]);
+		metadata.metadata.push(last_config);
+&nbsp;
+		var transaction_filter = decodeTransactionFilter(proto_block_metadata.metadata[2]);
+		metadata.metadata.push(transaction_filter);
+	}
+&nbsp;
+	return metadata;
+};
+&nbsp;
+function decodeTransactionFilter(metadata_bytes) {
+	var transaction_filter = [];
+	for(let i=0; i&lt;metadata_bytes.length; i++) {
+		let value = parseInt(metadata_bytes[i]);
+		transaction_filter.push(value);
+	}
+	return transaction_filter;
+}
+&nbsp;
+function decodeLastConfigSequenceNumber(metadata_bytes) {
+	var last_config = {};
+	last_config.value = {};
+	<span class="missing-if-branch" title="else path not taken" >E</span>if(metadata_bytes) {
+		var proto_metadata = _commonProto.Metadata.decode(metadata_bytes);
+		var proto_last_config = _commonProto.LastConfig.decode(proto_metadata.getValue());
+		last_config.value.index = proto_last_config.getIndex();
+		last_config.signatures = decodeMetadataValueSignatures(proto_metadata.signatures);
+	}
+	return last_config;
+}
+&nbsp;
+function decodeMetadataSignatures(metadata_bytes) {
+	var metadata = {};
+	var proto_metadata = _commonProto.Metadata.decode(metadata_bytes);
+	metadata.value = proto_metadata.getValue().toBuffer().toString();
+	metadata.signatures = decodeMetadataValueSignatures(proto_metadata.signatures);
+&nbsp;
+	return metadata;
+}
+&nbsp;
+function decodeMetadataValueSignatures(proto_meta_signatures) {
+	var signatures = [];
+	<span class="missing-if-branch" title="else path not taken" >E</span>if(proto_meta_signatures) for(let i in proto_meta_signatures) {
+<span class="cstat-no" title="statement not covered" >		var metadata_signature = {};</span>
+<span class="cstat-no" title="statement not covered" >		var proto_metadata_signature = _commonProto.MetadataSignature.decode(proto_meta_signatures[i].toBuffer());</span>
+<span class="cstat-no" title="statement not covered" >		metadata_signature.signature_header = decodeSignatureHeader(proto_metadata_signature.getSignatureHeader());</span>
+<span class="cstat-no" title="statement not covered" >		metadata_signature.signature = proto_metadata_signature.getSignature().toBuffer();</span>
+<span class="cstat-no" title="statement not covered" >		signatures.push(metadata_signature);</span>
+	}
+&nbsp;
+	return signatures;
+}
+&nbsp;
+function decodeBlockDataEnvelope(proto_envelope) {
+	var envelope = {};
+	envelope.signature = proto_envelope.getSignature().toBuffer(); //leave as bytes
+&nbsp;
+	envelope.payload = {};
+	var proto_payload = _commonProto.Payload.decode(proto_envelope.getPayload().toBuffer());
+	envelope.payload.header = decodeHeader(proto_payload.getHeader());
+&nbsp;
+	<span class="missing-if-branch" title="else path not taken" >E</span>if(envelope.payload.header.channel_header.type === HeaderType[1]) { // CONFIG
+		envelope.payload.data = decodeConfigEnvelope(proto_payload.getData().toBuffer());
+	}
+//	else if(envelope.payload.header.channel_header.type === HeaderType[2]) { // CONFIG_UPDATE
+//		envelope.payload.data = decodeConfigUpdateEnvelope(proto_payload.getData().toBuffer());
+//	}
+	else <span class="cstat-no" title="statement not covered" >if(envelope.payload.header.channel_header.type === HeaderType[3]) { //ENDORSER_TRANSACTION</span>
+<span class="cstat-no" title="statement not covered" >		envelope.payload.data = decodeEndorserTransaction(proto_payload.getData().toBuffer());</span>
+	}
+	else {
+<span class="cstat-no" title="statement not covered" >		throw new Error('Only able to decode ENDORSER_TRANSACTION and CONFIG type blocks');</span>
+	}
+&nbsp;
+	return envelope;
+};
+&nbsp;
+<span class="fstat-no" title="function not covered" >function decodeEndorserTransaction(trans_bytes) {</span>
+<span class="cstat-no" title="statement not covered" >	var data = {};</span>
+<span class="cstat-no" title="statement not covered" >	var transaction = _transProto.Transaction.decode(trans_bytes);</span>
+<span class="cstat-no" title="statement not covered" >	data.actions = [];</span>
+<span class="cstat-no" title="statement not covered" >	if(transaction &amp;&amp; transaction.actions) <span class="cstat-no" title="statement not covered" >for(let i in transaction.actions) {</span></span>
+<span class="cstat-no" title="statement not covered" >		var action = {};</span>
+<span class="cstat-no" title="statement not covered" >		action.header = decodeSignatureHeader(transaction.actions[i].header);</span>
+<span class="cstat-no" title="statement not covered" >		action.payload = decodeChaincodeActionPayload(transaction.actions[i].payload);</span>
+<span class="cstat-no" title="statement not covered" >		data.actions.push(action);</span>
+	}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return data;</span>
+};
+&nbsp;
+function decodeConfigEnvelope(config_envelope_bytes) {
+	var config_envelope = {};
+	var proto_config_envelope = _configtxProto.ConfigEnvelope.decode(config_envelope_bytes);
+	config_envelope.config = decodeConfig(proto_config_envelope.getConfig());
+&nbsp;
+	logger.debug('decodeConfigEnvelope - decode complete for config envelope - start config update');
+	config_envelope.last_update = {};
+	var proto_last_update = proto_config_envelope.getLastUpdate();//this is a common.Envelope
+	if (proto_last_update !== null) { // the orderer's genesis block may not have this field
+		config_envelope.last_update.payload = {};
+		var proto_payload = _commonProto.Payload.decode(proto_last_update.getPayload().toBuffer());
+		config_envelope.last_update.payload.header = decodeHeader(proto_payload.getHeader());
+		config_envelope.last_update.payload.data = decodeConfigUpdateEnvelope(proto_payload.getData().toBuffer());
+		config_envelope.last_update.signature = proto_last_update.getSignature().toBuffer();//leave as bytes
+	}
+&nbsp;
+	return config_envelope;
+};
+&nbsp;
+function decodeConfig(proto_config) {
+	var config = {};
+	config.sequence = proto_config.getSequence();
+	config.channel_group = decodeConfigGroup(proto_config.getChannelGroup());
+&nbsp;
+	return config;
+};
+&nbsp;
+function decodeConfigUpdateEnvelope(config_update_envelope_bytes) {
+	var config_update_envelope = {};
+	var proto_config_update_envelope = _configtxProto.ConfigUpdateEnvelope.decode(config_update_envelope_bytes);
+	config_update_envelope.config_update = decodeConfigUpdate(proto_config_update_envelope.getConfigUpdate().toBuffer());
+	var signatures = [];
+	for(var i in proto_config_update_envelope.signatures) {
+		let proto_configSignature = proto_config_update_envelope.signatures[i];
+		var config_signature = decodeConfigSignature(proto_configSignature);
+		signatures.push(config_signature);
+	}
+	config_update_envelope.signatures = signatures;
+&nbsp;
+	return config_update_envelope;
+};
+&nbsp;
+function decodeConfigUpdate(config_update_bytes) {
+	var config_update = {};
+	var proto_config_update = _configtxProto.ConfigUpdate.decode(config_update_bytes);
+	config_update.channel_id = proto_config_update.getChannelId();
+	config_update.read_set = decodeConfigGroup(proto_config_update.getReadSet());
+	config_update.write_set = decodeConfigGroup(proto_config_update.getWriteSet());
+&nbsp;
+	return config_update;
+};
+&nbsp;
+function decodeConfigGroups(config_group_map) {
+	var config_groups = {};
+	var keys = Object.keys(config_group_map.map);
+	for(let i =0; i &lt; keys.length; i++) {
+		let key = keys[i];
+		config_groups[key] = decodeConfigGroup(config_group_map.map[key].value);
+	}
+&nbsp;
+	return config_groups;
+};
+&nbsp;
+function decodeConfigGroup(proto_config_group) {
+	<span class="missing-if-branch" title="if path not taken" >I</span>if(!proto_config_group) <span class="cstat-no" title="statement not covered" >return null;</span>
+	var config_group = {};
+	config_group.version = decodeVersion(proto_config_group.getVersion());
+	config_group.groups = decodeConfigGroups(proto_config_group.getGroups());
+	config_group.values = decodeConfigValues(proto_config_group.getValues());
+	config_group.policies = decodeConfigPolicies(proto_config_group.getPolicies());
+	config_group.mod_policy = proto_config_group.getModPolicy(); //string
+	return config_group;
+};
+&nbsp;
+function decodeConfigValues(config_value_map) {
+	var config_values = {};
+	var keys = Object.keys(config_value_map.map);
+	for(let i =0; i &lt; keys.length; i++) {
+		let key = keys[i];
+		config_values[key] = decodeConfigValue(config_value_map.map[key]);
+	}
+&nbsp;
+	return config_values;
+};
+&nbsp;
+function decodeConfigValue(proto_config_value) {
+	var config_value = {};
+	logger.debug(' ======&gt; Config item ::%s', proto_config_value.key);
+	config_value.version = decodeVersion(proto_config_value.value.getVersion());
+	config_value.mod_policy = proto_config_value.value.getModPolicy();
+	config_value.value = {};
+	switch(proto_config_value.key) {
+<span class="branch-0 cbranch-no" title="branch not covered" >	case 'AnchorPeers':</span>
+<span class="cstat-no" title="statement not covered" >		var anchor_peers = [];</span>
+<span class="cstat-no" title="statement not covered" >		var proto_anchor_peers = _peerConfigurationProto.AnchorPeers.decode(proto_config_value.value.value);</span>
+<span class="cstat-no" title="statement not covered" >		if(proto_anchor_peers &amp;&amp; proto_anchor_peers.anchor_peers) <span class="cstat-no" title="statement not covered" >for(var i in proto_anchor_peers.anchor_peers) {</span></span>
+<span class="cstat-no" title="statement not covered" >			var anchor_peer = {</span>
+				host : proto_anchor_peers.anchor_peers[i].host,
+				port : proto_anchor_peers.anchor_peers[i].port
+			};
+<span class="cstat-no" title="statement not covered" >			anchor_peers.push(anchor_peer);</span>
+		}
+<span class="cstat-no" title="statement not covered" >		config_value.value.anchor_peers = anchor_peers;</span>
+<span class="cstat-no" title="statement not covered" >		break;</span>
+	case 'MSP':
+		var msp_config = {};
+		var proto_msp_config = _mspConfigProto.MSPConfig.decode(proto_config_value.value.value);
+		<span class="missing-if-branch" title="else path not taken" >E</span>if(proto_msp_config.getType() == 0) {
+			msp_config = decodeFabricMSPConfig(proto_msp_config.getConfig());
+		}
+		config_value.value.type = proto_msp_config.type;
+		config_value.value.config = msp_config;
+		break;
+	case 'ConsensusType':
+		var proto_consensus_type = _ordererConfigurationProto.ConsensusType.decode(proto_config_value.value.value);
+		config_value.value.type = proto_consensus_type.getType(); // string
+		break;
+	case 'BatchSize':
+		var proto_batch_size = _ordererConfigurationProto.BatchSize.decode(proto_config_value.value.value);
+		config_value.value.maxMessageCount = proto_batch_size.getMaxMessageCount(); //uint32
+		config_value.value.absoluteMaxBytes = proto_batch_size.getAbsoluteMaxBytes(); //uint32
+		config_value.value.preferredMaxBytes = proto_batch_size.getPreferredMaxBytes(); //uint32
+		break;
+	case 'BatchTimeout':
+		var proto_batch_timeout = _ordererConfigurationProto.BatchTimeout.decode(proto_config_value.value.value);
+		config_value.value.timeout = proto_batch_timeout.getTimeout(); //string
+		break;
+	case 'ChannelRestrictions':
+		var proto_channel_restrictions = _ordererConfigurationProto.ChannelRestrictions.decode(proto_config_value.value.value);
+		config_value.value.max_count = proto_channel_restrictions.getMaxCount(); //unit64
+		break;
+<span class="branch-6 cbranch-no" title="branch not covered" >	case 'CreationPolicy':</span>
+<span class="cstat-no" title="statement not covered" >		var proto_creation_policy = _ordererConfigurationProto.CreationPolicy.decode(proto_config_value.value.value);</span>
+<span class="cstat-no" title="statement not covered" >		config_value.value.policy = proto_creation_policy.getPolicy(); </span>//string
+<span class="cstat-no" title="statement not covered" >		break;</span>
+	case 'Consortium':
+		var consortium_name = _commonConfigurationProto.Consortium.decode(proto_config_value.value.value);
+		config_value.value.name = consortium_name.getName(); //string
+		break;
+<span class="branch-8 cbranch-no" title="branch not covered" >	case 'ChainCreationPolicyNames':</span>
+<span class="cstat-no" title="statement not covered" >		var proto_chain_creation_policy_names = _ordererConfigurationProto.ChainCreationPolicyNames.decode(proto_config_value.value.value);</span>
+<span class="cstat-no" title="statement not covered" >		var names = [];</span>
+<span class="cstat-no" title="statement not covered" >		var proto_names = proto_chain_creation_policy_names.getNames();</span>
+<span class="cstat-no" title="statement not covered" >		if(proto_names) <span class="cstat-no" title="statement not covered" >for(var i in proto_names) {</span></span>
+<span class="cstat-no" title="statement not covered" >			names.push(proto_names[i]); </span>//string
+		}
+<span class="cstat-no" title="statement not covered" >		config_value.value.names = names;</span>
+<span class="cstat-no" title="statement not covered" >		break;</span>
+	case 'HashingAlgorithm':
+		var proto_hashing_algorithm = _commonConfigurationProto.HashingAlgorithm.decode(proto_config_value.value.value);
+		config_value.value.name = proto_hashing_algorithm.getName();
+		break;
+	case 'BlockDataHashingStructure':
+		var proto_blockdata_hashing_structure = _commonConfigurationProto.BlockDataHashingStructure.decode(proto_config_value.value.value);
+		config_value.value.width = proto_blockdata_hashing_structure.getWidth(); //
+		break;
+	case 'OrdererAddresses':
+		var orderer_addresses = _commonConfigurationProto.OrdererAddresses.decode(proto_config_value.value.value);
+		var addresses = [];
+		var proto_addresses = orderer_addresses.getAddresses();
+		<span class="missing-if-branch" title="else path not taken" >E</span>if(proto_addresses) for(var i in proto_addresses) {
+			addresses.push(proto_addresses[i]); //string
+		}
+		config_value.value.addresses = addresses;
+		break;
+	default:
+//		logger.debug('loadConfigValue - %s   - value: %s', group_name, config_value.value.value);
+	}
+	return config_value;
+};
+&nbsp;
+function decodeConfigPolicies(config_policy_map) {
+	var config_policies = {};
+	var keys = Object.keys(config_policy_map.map);
+	for(let i =0; i &lt; keys.length; i++) {
+		let key = keys[i];
+		config_policies[key] = decodeConfigPolicy(config_policy_map.map[key]);
+	}
+&nbsp;
+	return config_policies;
+};
+&nbsp;
+var Policy_PolicyType = [ 'UNKNOWN','SIGNATURE','MSP','IMPLICIT_META'];
+function decodeConfigPolicy(proto_config_policy) {
+	var config_policy = {};
+	config_policy.version = decodeVersion(proto_config_policy.value.getVersion());
+	config_policy.mod_policy = proto_config_policy.value.getModPolicy();
+	config_policy.policy = {};
+	<span class="missing-if-branch" title="else path not taken" >E</span>if(proto_config_policy.value.policy) {
+		config_policy.policy.type = Policy_PolicyType[proto_config_policy.value.policy.type];
+		logger.debug('decodeConfigPolicy ======&gt; Policy item ::%s', proto_config_policy.key);
+		switch(proto_config_policy.value.policy.type) {
+		case _policiesProto.Policy.PolicyType.SIGNATURE:
+			config_policy.policy.policy = decodeSignaturePolicyEnvelope(proto_config_policy.value.policy.policy);
+			break;
+		case _policiesProto.Policy.PolicyType.MSP:
+			var proto_msp = _policiesProto.Policy.decode(proto_config_policy.value.policy.policy);
+			logger.warn('decodeConfigPolicy - found a PolicyType of MSP. This policy type has not been implemented yet.');
+			break;
+		case _policiesProto.Policy.PolicyType.IMPLICIT_META:
+			config_policy.policy.policy = decodeImplicitMetaPolicy(proto_config_policy.value.policy.policy);
+			break;
+		default:
+			throw new Error('Unknown Policy type');
+		}
+	}
+&nbsp;
+	return config_policy;
+};
+&nbsp;
+var ImplicitMetaPolicy_Rule = ['ANY','ALL','MAJORITY'];
+function decodeImplicitMetaPolicy(implicit_meta_policy_bytes) {
+	var implicit_meta_policy = {};
+	var proto_implicit_meta_policy = _policiesProto.ImplicitMetaPolicy.decode(implicit_meta_policy_bytes);
+	implicit_meta_policy.sub_policy = proto_implicit_meta_policy.getSubPolicy();
+	implicit_meta_policy.rule = ImplicitMetaPolicy_Rule[proto_implicit_meta_policy.getRule()];
+	return implicit_meta_policy;
+}
+&nbsp;
+function decodeSignaturePolicyEnvelope(signature_policy_envelope_bytes) {
+	var signature_policy_envelope = {};
+	var porto_signature_policy_envelope = _policiesProto.SignaturePolicyEnvelope.decode(signature_policy_envelope_bytes);
+	signature_policy_envelope.version = decodeVersion(porto_signature_policy_envelope.getVersion());
+	signature_policy_envelope.policy = decodeSignaturePolicy(porto_signature_policy_envelope.getPolicy());
+	var identities = [];
+	var proto_identities = porto_signature_policy_envelope.getIdentities();
+	<span class="missing-if-branch" title="else path not taken" >E</span>if(proto_identities) for(var i in proto_identities) {
+		var msp_principal = decodeMSPPrincipal(proto_identities[i]);
+		identities.push(msp_principal); //string
+	}
+	signature_policy_envelope.identities = identities;
+&nbsp;
+	return signature_policy_envelope;
+};
+&nbsp;
+function decodeSignaturePolicy(proto_signature_policy) {
+	var signature_policy = {};
+	signature_policy.Type = proto_signature_policy.Type;
+	if(signature_policy.Type == 'n_out_of') {
+		signature_policy.n_out_of = {};
+		signature_policy.n_out_of.N = proto_signature_policy.n_out_of.getN();
+		signature_policy.n_out_of.policies = [];
+		for(var i in proto_signature_policy.n_out_of.policies){
+			var proto_policy = proto_signature_policy.n_out_of.policies[i];
+			var policy = decodeSignaturePolicy(proto_policy);
+			signature_policy.n_out_of.policies.push(policy);
+		}
+	}
+	else <span class="missing-if-branch" title="else path not taken" >E</span>if(signature_policy.Type == 'signed_by') {
+		signature_policy.signed_by = proto_signature_policy.getSignedBy();
+	}
+	else {
+<span class="cstat-no" title="statement not covered" >		throw new Error('unknown signature policy type');</span>
+	}
+&nbsp;
+	return signature_policy;
+};
+&nbsp;
+function decodeMSPPrincipal(proto_msp_principal) {
+	var msp_principal = {};
+	msp_principal.principal_classification = proto_msp_principal.getPrincipalClassification();
+	var proto_principal = null;
+	switch(msp_principal.principal_classification) {
+	case _mspPrProto.MSPPrincipal.Classification.ROLE:
+		proto_principal = _mspPrProto.MSPRole.decode(proto_msp_principal.getPrincipal());
+		msp_principal.msp_identifier = proto_principal.getMspIdentifier();
+		if(proto_principal.getRole() === 0) {
+			msp_principal.Role = 'MEMBER';
+		}
+		else <span class="missing-if-branch" title="else path not taken" >E</span>if(proto_principal.getRole() === 1){
+			msp_principal.Role = 'ADMIN';
+		}
+		break;
+<span class="branch-1 cbranch-no" title="branch not covered" >	case _mspPrProto.MSPPrincipal.Classification.ORGANIZATION_UNIT:</span>
+<span class="cstat-no" title="statement not covered" >		proto_principal = _mspPrProto.OrganizationUnit.decode(proto_msp_principal.getPrincipal());</span>
+<span class="cstat-no" title="statement not covered" >		msp_principal.msp_identifier = proto_principal.getMspIdendifier();/</span>/string
+<span class="cstat-no" title="statement not covered" >		msp_principal.organizational_unit_identifier = proto_principal.getOrganizationalUnitIdentifier(); </span>//string
+<span class="cstat-no" title="statement not covered" >		msp_principal.certifiers_identifier = proto_principal.getCertifiersIdentifier().toBuffer(); </span>//bytes
+<span class="cstat-no" title="statement not covered" >		break;</span>
+<span class="branch-2 cbranch-no" title="branch not covered" >	case _mspPrProto.MSPPrincipal.Classification.IDENTITY:</span>
+<span class="cstat-no" title="statement not covered" >		msp_principal = decodeIdentity(proto_msp_principal.getPrincipal());</span>
+<span class="cstat-no" title="statement not covered" >		break;</span>
+	}
+&nbsp;
+	return msp_principal;
+};
+&nbsp;
+function decodeConfigSignature(proto_configSignature) {
+	var config_signature = {};
+	config_signature.signature_header = decodeSignatureHeader(proto_configSignature.getSignatureHeader().toBuffer());
+	config_signature.sigature = proto_configSignature.getSignature().toBuffer();
+&nbsp;
+	return config_signature;
+};
+&nbsp;
+function decodeSignatureHeader(signature_header_bytes) {
+	//logger.debug('decodeSignatureHeader - %s',signature_header_bytes);
+	var signature_header = {};
+	var proto_signature_header = _commonProto.SignatureHeader.decode(signature_header_bytes);
+	signature_header.creator = decodeIdentity(proto_signature_header.getCreator().toBuffer());
+	signature_header.nonce = proto_signature_header.getNonce().toBuffer();
+&nbsp;
+	return signature_header;
+};
+&nbsp;
+function decodeIdentity(id_bytes) {
+	//logger.debug('decodeIdentity - %s',id_bytes);
+	var identity = {};
+	try {
+		var proto_identity = _identityProto.SerializedIdentity.decode(id_bytes);
+		identity.Mspid = proto_identity.getMspid();
+		identity.IdBytes = proto_identity.getIdBytes().toBuffer().toString();
+	}
+	catch(err) {
+<span class="cstat-no" title="statement not covered" >		logger.error('Failed to decode the identity: %s', err.stack ? err.stack : err);</span>
+	}
+&nbsp;
+	return identity;
+};
+&nbsp;
+function decodeFabricMSPConfig(msp_config_bytes) {
+	var msp_config = {};
+	var proto_msp_config = _mspConfigProto.FabricMSPConfig.decode(msp_config_bytes);
+&nbsp;
+	msp_config.name = proto_msp_config.getName();
+	msp_config.root_certs = toPEMcerts(proto_msp_config.getRootCerts());
+	msp_config.intermediate_certs = toPEMcerts(proto_msp_config.getIntermediateCerts());
+	msp_config.admins = toPEMcerts(proto_msp_config.getAdmins());
+	msp_config.revocation_list = toPEMcerts(proto_msp_config.getRevocationList());
+	msp_config.signing_identity = decodeSigningIdentityInfo(proto_msp_config.getSigningIdentity());
+	msp_config.organizational_unit_identifiers = decodeFabricOUIdentifier(proto_msp_config.getOrganizationalUnitIdentifiers());
+&nbsp;
+	return msp_config;
+};
+&nbsp;
+function decodeFabricOUIdentifier(proto_organizational_unit_identitfiers) {
+	var organizational_unit_identitfiers = [];
+	<span class="missing-if-branch" title="else path not taken" >E</span>if(proto_organizational_unit_identitfiers) {
+		for(let i = 0; i &lt; proto_organizational_unit_identitfiers.length; i++) {
+<span class="cstat-no" title="statement not covered" >			var proto_organizational_unit_identitfier = proto_organizational_unit_identitfiers[i];</span>
+<span class="cstat-no" title="statement not covered" >			var organizational_unit_identitfier = {};</span>
+<span class="cstat-no" title="statement not covered" >			organizational_unit_identitfier.certificate =</span>
+				proto_organizational_unit_identitfier.getCertificate().toBuffer().toString();
+<span class="cstat-no" title="statement not covered" >			organizational_unit_identitfier.organizational_unit_identifier =</span>
+				proto_organizational_unit_identitfier.getOrganizationalUnitIdentifier();
+<span class="cstat-no" title="statement not covered" >			organizational_unit_identitfiers.push(organizational_unit_identitfier);</span>
+		}
+	}
+&nbsp;
+	return organizational_unit_identitfiers;
+}
+&nbsp;
+function toPEMcerts(buffer_array_in) {
+	var buffer_array_out = [];
+	for(var i in buffer_array_in) {
+		buffer_array_out.push(buffer_array_in[i].toBuffer().toString());
+	}
+&nbsp;
+	return buffer_array_out;
+};
+&nbsp;
+function decodeSigningIdentityInfo(signing_identity_info_bytes) {
+	var signing_identity_info = {};
+	<span class="missing-if-branch" title="if path not taken" >I</span>if(signing_identity_info_bytes) {
+<span class="cstat-no" title="statement not covered" >		var proto_signing_identity_info = _mspConfigProto.SigningIdentityInfo.decode(signing_identity_info_bytes);</span>
+<span class="cstat-no" title="statement not covered" >		signing_identity_info.public_signer = proto_signing_identity_info.getPublicSigner().toBuffer().toString();</span>
+<span class="cstat-no" title="statement not covered" >		signing_identity_info.private_signer = decodeKeyInfo(proto_signing_identity_info.getPrivateSigner());</span>
+	}
+&nbsp;
+	return signing_identity_info_bytes;
+}
+&nbsp;
+<span class="fstat-no" title="function not covered" >function decodeKeyInfo(key_info_bytes) {</span>
+<span class="cstat-no" title="statement not covered" >	var key_info = {};</span>
+<span class="cstat-no" title="statement not covered" >	if(key_info_bytes) {</span>
+<span class="cstat-no" title="statement not covered" >		var proto_key_info = _mspConfigProto.KeyInfo.decode(key_info_bytes);</span>
+<span class="cstat-no" title="statement not covered" >		key_info.key_identifier = proto_key_info.getKeyIdentitier();</span>
+<span class="cstat-no" title="statement not covered" >		key_info.key_material = 'private'; </span>//should not show this
+	}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return key_info;</span>
+}
+&nbsp;
+function decodeHeader(proto_header) {
+	var header = {};
+	header.channel_header = decodeChannelHeader(proto_header.getChannelHeader().toBuffer());
+	header.signature_header = decodeSignatureHeader(proto_header.getSignatureHeader().toBuffer());
+&nbsp;
+	return header;
+};
+&nbsp;
+var HeaderType = {
+	0 : 'MESSAGE',              // Used for messages which are signed but opaque
+	1 : 'CONFIG',               // Used for messages which express the channel config
+	2 : 'CONFIG_UPDATE',        // Used for transactions which update the channel config
+	3 : 'ENDORSER_TRANSACTION', // Used by the SDK to submit endorser based transactions
+	4 : 'ORDERER_TRANSACTION',  // Used internally by the orderer for management
+	5 : 'DELIVER_SEEK_INFO',    // Used as the type for Envelope messages submitted to instruct the Deliver API to seek
+	6 : 'CHAINCODE_PACKAGE'     // Used for packaging chaincode artifacts for install
+};
+&nbsp;
+function decodeChannelHeader(header_bytes){
+	var channel_header = {};
+	var proto_channel_header = _commonProto.ChannelHeader.decode(header_bytes);
+	channel_header.type = HeaderType[proto_channel_header.getType()];
+	channel_header.version = decodeVersion(proto_channel_header.getType());
+	channel_header.timestamp = timeStampToDate(proto_channel_header.getTimestamp()).toString();
+	channel_header.channel_id = proto_channel_header.getChannelId();
+	channel_header.tx_id = proto_channel_header.getTxId();
+	channel_header.epoch = proto_channel_header.getEpoch().toInt();
+	//TODO need to decode this
+	channel_header.extension = proto_channel_header.getExtension().toBuffer();
+&nbsp;
+	return channel_header;
+};
+&nbsp;
+function timeStampToDate(time_stamp) {
+	var millis = time_stamp.seconds * 1000 + time_stamp.nanos / 1000000;
+	var	date = new Date(millis);
+&nbsp;
+	return date;
+};
+&nbsp;
+<span class="fstat-no" title="function not covered" >function decodeChaincodeActionPayload(payload_bytes) {</span>
+<span class="cstat-no" title="statement not covered" >	var payload = {};</span>
+<span class="cstat-no" title="statement not covered" >	var proto_chaincode_action_payload = _transProto.ChaincodeActionPayload.decode(payload_bytes);</span>
+<span class="cstat-no" title="statement not covered" >	payload.chaincode_proposal_payload = decodeChaincodeProposalPayload(proto_chaincode_action_payload.getChaincodeProposalPayload());</span>
+<span class="cstat-no" title="statement not covered" >	payload.action = decodeChaincodeEndorsedAction(proto_chaincode_action_payload.getAction());</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return payload;</span>
+};
+&nbsp;
+<span class="fstat-no" title="function not covered" >function decodeChaincodeProposalPayload(chaincode_proposal_payload_bytes) {</span>
+<span class="cstat-no" title="statement not covered" >	var chaincode_proposal_payload = {};</span>
+<span class="cstat-no" title="statement not covered" >	var proto_chaincode_proposal_payload = _proposalProto.ChaincodeProposalPayload.decode(chaincode_proposal_payload_bytes);</span>
+<span class="cstat-no" title="statement not covered" >	chaincode_proposal_payload.input = proto_chaincode_proposal_payload.getInput().toBuffer().toString();</span>
+	//TransientMap is not allowed to be included on ledger
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return chaincode_proposal_payload;</span>
+}
+<span class="fstat-no" title="function not covered" >function decodeChaincodeEndorsedAction(proto_chaincode_endorsed_action) {</span>
+<span class="cstat-no" title="statement not covered" >	var action = {};</span>
+<span class="cstat-no" title="statement not covered" >	action.proposal_response_payload = decodeProposalResponsePayload(proto_chaincode_endorsed_action.getProposalResponsePayload());</span>
+<span class="cstat-no" title="statement not covered" >	action.endorsements = [];</span>
+<span class="cstat-no" title="statement not covered" >	for(var i in proto_chaincode_endorsed_action.endorsements) {</span>
+<span class="cstat-no" title="statement not covered" >		var endorsement = decodeEndorsement(proto_chaincode_endorsed_action.endorsements[i]);</span>
+<span class="cstat-no" title="statement not covered" >		action.endorsements.push(endorsement);</span>
+	}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return action;</span>
+};
+&nbsp;
+<span class="fstat-no" title="function not covered" >function decodeEndorsement(proto_endorsement) {</span>
+<span class="cstat-no" title="statement not covered" >	var endorsement = {};</span>
+<span class="cstat-no" title="statement not covered" >	endorsement.endorser = decodeIdentity(proto_endorsement.getEndorser());</span>
+<span class="cstat-no" title="statement not covered" >	endorsement.signature = proto_endorsement.getSignature().toBuffer();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return endorsement;</span>
+};
+&nbsp;
+<span class="fstat-no" title="function not covered" >function decodeProposalResponsePayload(proposal_response_payload_bytes) {</span>
+<span class="cstat-no" title="statement not covered" >	var proposal_response_payload = {};</span>
+<span class="cstat-no" title="statement not covered" >	var proto_proposal_response_payload = _responseProto.ProposalResponsePayload.decode(proposal_response_payload_bytes);</span>
+<span class="cstat-no" title="statement not covered" >	proposal_response_payload.proposal_hash = proto_proposal_response_payload.getProposalHash().toBuffer().toString('hex');</span>
+<span class="cstat-no" title="statement not covered" >	proposal_response_payload.extension = decodeChaincodeAction(proto_proposal_response_payload.getExtension());</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return proposal_response_payload;</span>
+};
+&nbsp;
+<span class="fstat-no" title="function not covered" >function decodeChaincodeAction(action_bytes) {</span>
+<span class="cstat-no" title="statement not covered" >	var chaincode_action = {};</span>
+<span class="cstat-no" title="statement not covered" >	var proto_chaincode_action = _proposalProto.ChaincodeAction.decode(action_bytes);</span>
+<span class="cstat-no" title="statement not covered" >	chaincode_action.results = decodeReadWriteSets(proto_chaincode_action.getResults());</span>
+<span class="cstat-no" title="statement not covered" >	chaincode_action.events = decodeChaincodeEvents(proto_chaincode_action.getEvents());</span>
+<span class="cstat-no" title="statement not covered" >	chaincode_action.response = decodeResponse(proto_chaincode_action.getResponse());</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return chaincode_action;</span>
+};
+&nbsp;
+<span class="fstat-no" title="function not covered" >function decodeChaincodeEvents(event_bytes) {</span>
+<span class="cstat-no" title="statement not covered" >	var events = {};</span>
+<span class="cstat-no" title="statement not covered" >	var proto_events = _ccEventProto.ChaincodeEvent.decode(event_bytes);</span>
+<span class="cstat-no" title="statement not covered" >	events.chaincode_id = proto_events.getChaincodeId();</span>
+<span class="cstat-no" title="statement not covered" >	events.tx_id = proto_events.getTxId();</span>
+<span class="cstat-no" title="statement not covered" >	events.event_name = proto_events.getEventName();</span>
+<span class="cstat-no" title="statement not covered" >	events.payload = proto_events.getPayload().toBuffer();</span>
+<span class="cstat-no" title="statement not covered" >	return events;</span>
+}
+&nbsp;
+<span class="fstat-no" title="function not covered" >function decodeReadWriteSets(rw_sets_bytes) {</span>
+<span class="cstat-no" title="statement not covered" >	var proto_tx_read_write_set = _rwsetProto.TxReadWriteSet.decode(rw_sets_bytes);</span>
+<span class="cstat-no" title="statement not covered" >	var tx_read_write_set = {};</span>
+<span class="cstat-no" title="statement not covered" >	tx_read_write_set.data_model = proto_tx_read_write_set.getDataModel();</span>
+<span class="cstat-no" title="statement not covered" >	if(proto_tx_read_write_set.getDataModel() === _rwsetProto.TxReadWriteSet.DataModel.KV) {</span>
+<span class="cstat-no" title="statement not covered" >		tx_read_write_set.ns_rwset = [];</span>
+<span class="cstat-no" title="statement not covered" >		let proto_ns_rwset = proto_tx_read_write_set.getNsRwset();</span>
+<span class="cstat-no" title="statement not covered" >		for(let i in proto_ns_rwset) {</span>
+<span class="cstat-no" title="statement not covered" >			let kv_rw_set = {};</span>
+<span class="cstat-no" title="statement not covered" >			let proto_kv_rw_set = proto_ns_rwset[i];</span>
+<span class="cstat-no" title="statement not covered" >			kv_rw_set.namespace = proto_kv_rw_set.getNamespace();</span>
+<span class="cstat-no" title="statement not covered" >			kv_rw_set.rwset = decodeKVRWSet(proto_kv_rw_set.getRwset());</span>
+<span class="cstat-no" title="statement not covered" >			tx_read_write_set.ns_rwset.push(kv_rw_set);</span>
+		}
+	}
+	else {
+		// not able to decode this type of rw set, return the array of byte[]
+<span class="cstat-no" title="statement not covered" >		tx_read_write_set.ns_rwset = proto_tx_read_write_set.getNsRwset();</span>
+	}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return tx_read_write_set;</span>
+}
+&nbsp;
+<span class="fstat-no" title="function not covered" >function decodeKVRWSet(kv_bytes) {</span>
+<span class="cstat-no" title="statement not covered" >	var proto_kv_rw_set = _kv_rwsetProto.KVRWSet.decode(kv_bytes);</span>
+<span class="cstat-no" title="statement not covered" >	var kv_rw_set = {};</span>
+&nbsp;
+	// KV readwrite set has three arrays
+<span class="cstat-no" title="statement not covered" >	kv_rw_set.reads = [];</span>
+<span class="cstat-no" title="statement not covered" >	kv_rw_set.range_queries_info = [];</span>
+<span class="cstat-no" title="statement not covered" >	kv_rw_set.writes = [];</span>
+&nbsp;
+	// build reads
+<span class="cstat-no" title="statement not covered" >	let reads = kv_rw_set.reads;</span>
+<span class="cstat-no" title="statement not covered" >	var proto_reads = proto_kv_rw_set.getReads();</span>
+<span class="cstat-no" title="statement not covered" >	for(let i in proto_reads) {</span>
+<span class="cstat-no" title="statement not covered" >		reads.push(decodeKVRead(proto_reads[i]));</span>
+	}
+&nbsp;
+	// build range_queries_info
+<span class="cstat-no" title="statement not covered" >	let range_queries_info = kv_rw_set.range_queries_info;</span>
+<span class="cstat-no" title="statement not covered" >	var proto_range_queries_info = proto_kv_rw_set.getRangeQueriesInfo();</span>
+<span class="cstat-no" title="statement not covered" >	for(let i in proto_range_queries_info) {</span>
+<span class="cstat-no" title="statement not covered" >		range_queries_info.push(decodeRangeQueryInfo(proto_range_queries_info[i]));</span>
+	}
+&nbsp;
+	// build writes
+<span class="cstat-no" title="statement not covered" >	let writes = kv_rw_set.writes;</span>
+<span class="cstat-no" title="statement not covered" >	var proto_writes = proto_kv_rw_set.getWrites();</span>
+<span class="cstat-no" title="statement not covered" >	for(let i in proto_writes) {</span>
+<span class="cstat-no" title="statement not covered" >		writes.push(decodeKVWrite(proto_writes[i]));</span>
+	}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return kv_rw_set;</span>
+}
+&nbsp;
+<span class="fstat-no" title="function not covered" >function decodeKVRead(proto_kv_read) {</span>
+<span class="cstat-no" title="statement not covered" >	let kv_read = {};</span>
+<span class="cstat-no" title="statement not covered" >	kv_read.key = proto_kv_read.getKey();</span>
+<span class="cstat-no" title="statement not covered" >	let proto_version = proto_kv_read.getVersion();</span>
+<span class="cstat-no" title="statement not covered" >	if(proto_version) {</span>
+<span class="cstat-no" title="statement not covered" >		kv_read.version = {};</span>
+<span class="cstat-no" title="statement not covered" >		kv_read.version.block_num = proto_version.getBlockNum();</span>
+<span class="cstat-no" title="statement not covered" >		kv_read.version.tx_num = proto_version.getTxNum();</span>
+	}
+	else {
+<span class="cstat-no" title="statement not covered" >		kv_read.version = null;</span>
+	}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return kv_read;</span>
+}
+&nbsp;
+<span class="fstat-no" title="function not covered" >function decodeRangeQueryInfo(proto_range_query_info) {</span>
+<span class="cstat-no" title="statement not covered" >	let range_query_info = {};</span>
+<span class="cstat-no" title="statement not covered" >	range_query_info.start_key = proto_range_query_info.getStartKey();</span>
+<span class="cstat-no" title="statement not covered" >	range_query_info.end_key = proto_range_query_info.getEndKey();</span>
+<span class="cstat-no" title="statement not covered" >	range_query_info.itr_exhausted = proto_range_query_info.getItrExhausted();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	range_query_info.reads_info = {};</span>
+	// reads_info is one of QueryReads
+<span class="cstat-no" title="statement not covered" >	let proto_raw_reads = proto_range_query_info.getRawReads();</span>
+<span class="cstat-no" title="statement not covered" >	if(proto_raw_reads.kv_reads) {</span>
+<span class="cstat-no" title="statement not covered" >		range_query_info.reads_info.kv_reads = [];</span>
+<span class="cstat-no" title="statement not covered" >		for(let i in proto_raw_reads.kv_reads) {</span>
+<span class="cstat-no" title="statement not covered" >			range_query_info.reads_info.kv_reads.push(proto_raw_reads.kv_reads[i]);</span>
+		}
+	}
+	// or QueryReadsMerkleSummary
+<span class="cstat-no" title="statement not covered" >	let proto_reads_merkle_hashes = proto_range_query_info.getReadsMerkleHashes();</span>
+<span class="cstat-no" title="statement not covered" >	if(proto_reads_merkle_hashes.max_degree) {</span>
+<span class="cstat-no" title="statement not covered" >		range_query_info.reads_merkle_hashes = {};</span>
+<span class="cstat-no" title="statement not covered" >		range_query_info.reads_merkle_hashes.max_degree = proto_reads_merkle_hashes.getMaxDegree();</span>
+<span class="cstat-no" title="statement not covered" >		range_query_info.reads_merkle_hashes.max_level = proto_reads_merkle_hashes.getMaxLevel();</span>
+<span class="cstat-no" title="statement not covered" >		range_query_info.reads_info.max_level_hashes = proto_reads_merkle_hashes.getMaxLevelHashes();</span>
+	}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return range_query_info;</span>
+}
+&nbsp;
+<span class="fstat-no" title="function not covered" >function decodeKVWrite(proto_kv_write) {</span>
+<span class="cstat-no" title="statement not covered" >	let kv_write = {};</span>
+<span class="cstat-no" title="statement not covered" >	kv_write.key = proto_kv_write.getKey();</span>
+<span class="cstat-no" title="statement not covered" >	kv_write.is_delete = proto_kv_write.getIsDelete();</span>
+<span class="cstat-no" title="statement not covered" >	kv_write.value = proto_kv_write.getValue().toBuffer().toString();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return kv_write;</span>
+}
+&nbsp;
+<span class="fstat-no" title="function not covered" >function decodeResponse(proto_response) {</span>
+<span class="cstat-no" title="statement not covered" >	if(!proto_response) <span class="cstat-no" title="statement not covered" >return null;</span></span>
+<span class="cstat-no" title="statement not covered" >	var response = {};</span>
+<span class="cstat-no" title="statement not covered" >	response.status = proto_response.getStatus();</span>
+<span class="cstat-no" title="statement not covered" >	response.message = proto_response.getMessage();</span>
+<span class="cstat-no" title="statement not covered" >	response.payload = proto_response.getPayload().toBuffer().toString();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	return response;</span>
+};
+&nbsp;
+// version numbers should not get that big
+// so lets just return an Integer (32bits)
+function decodeVersion(version_long) {
+	var version_string = version_long.toString();
+	var version_int = Number.parseInt(version_string);
+&nbsp;
+	return version_int;
+}
+&nbsp;
+module.exports = BlockDecoder;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 06 2017 17:25:54 GMT+0530 (IST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

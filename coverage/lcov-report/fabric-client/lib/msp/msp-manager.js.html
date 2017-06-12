@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for fabric-client/lib/msp/msp-manager.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">fabric-client/lib/msp/</a> msp-manager.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">76.36% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>42/55</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">72.73% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>16/22</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">83.33% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>5/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">77.36% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>41/53</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">35×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">35×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">35×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">35×</span>
+<span class="cline-any cline-yes">35×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">35×</span>
+<span class="cline-any cline-yes">35×</span>
+<span class="cline-any cline-yes">35×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">35×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">35×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">35×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * Copyright 2017 IBM All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+&nbsp;
+'use strict';
+&nbsp;
+var util = require('util');
+var path = require('path');
+var grpc = require('grpc');
+&nbsp;
+var MSP = require('./msp.js');
+var utils = require('../utils.js');
+var logger = utils.getLogger('MSPManager.js');
+var idModule = require('./identity.js');
+&nbsp;
+var SigningIdentity = idModule.SigningIdentity;
+var Signer = idModule.Signer;
+&nbsp;
+var mspProto = grpc.load(path.join(__dirname, '../protos/msp/msp_config.proto')).msp;
+var identityProto = grpc.load(path.join(__dirname, '../protos/msp/identities.proto')).msp;
+&nbsp;
+/**
+ * MSPManager is an interface defining a manager of one or more MSPs. This essentially acts
+ * as a mediator to MSP calls and routes MSP related calls to the appropriate MSP. This object
+ * is immutable, it is initialized once and never changed.
+ *
+ * @class
+ */
+var MSPManager = class {
+	constructor() {
+		this._msps = {};
+	}
+&nbsp;
+	/**
+	 * Instantiates MSPs for validating identities (like the endorsor in the ProposalResponse). The
+	 * MSPs loaded via this method require the CA certificate representing the Certificate
+	 * Authority that signed the identities to be validated. They also optionally contain the
+	 * certificates for the administrators of the organization that the CA certs represent.
+	 *
+	 * @param {protos/msp/mspconfig.proto} mspConfigs An array of MSPConfig objects as defined by the
+	 *   protobuf protos/msp/mspconfig.proto
+	 */
+	loadMSPs(mspConfigs) {
+		logger.debug('loadMSPs - start number of msps=%s',mspConfigs.length);
+		var self = this;
+		if (!mspConfigs || !Array.isArray(mspConfigs))
+			throw new Error('"mspConfigs" argument must be an array');
+&nbsp;
+		mspConfigs.forEach((config) =&gt; {
+			if (typeof config.getType() !== 'number' || config.getType() !== 0)
+				throw new Error(util.format('MSP Configuration object type not supported: %s', config.getType()));
+&nbsp;
+			if (!config.getConfig || !config.getConfig())
+				throw new Error('MSP Configuration object missing the payload in the "Config" property');
+&nbsp;
+			var fabricConfig = mspProto.FabricMSPConfig.decode(config.getConfig());
+&nbsp;
+			<span class="missing-if-branch" title="if path not taken" >I</span>if (!fabricConfig.getName())
+<span class="cstat-no" title="statement not covered" >				throw new Error('MSP Configuration does not have a name');</span>
+&nbsp;
+			// with this method we are only dealing with verifying MSPs, not local MSPs. Local MSPs are instantiated
+			// from user enrollment materials (see User class). For verifying MSPs the root certificates are always
+			// required
+			<span class="missing-if-branch" title="if path not taken" >I</span>if (!fabricConfig.getRootCerts())
+<span class="cstat-no" title="statement not covered" >				throw new Error('MSP Configuration does not have any root certificates required for validating signing certificates');</span>
+&nbsp;
+			// TODO: for now using application-scope defaults but crypto parameters like key size, hash family
+			// and digital signature algorithm should be from the config itself
+			var cs = utils.newCryptoSuite();
+			cs.setCryptoKeyStore(utils.newCryptoKeyStore());
+&nbsp;
+			// get the application org names
+			var orgs = [];
+			let org_units = fabricConfig.getOrganizationalUnitIdentifiers();
+			<span class="missing-if-branch" title="else path not taken" >E</span>if(org_units) for(let i = 0; i &lt; org_units.length; i++) {
+<span class="cstat-no" title="statement not covered" >				let org_unit = org_units[i];</span>
+<span class="cstat-no" title="statement not covered" >				let org_id = org_unit.organizational_unit_identifier;</span>
+<span class="cstat-no" title="statement not covered" >				logger.debug('loadMSPs - found org of :: %s',org_id);</span>
+<span class="cstat-no" title="statement not covered" >				orgs.push(org_id);</span>
+			}
+&nbsp;
+			var newMSP = new MSP({
+				rootCerts: fabricConfig.getRootCerts(),
+				intermediateCerts: fabricConfig.getIntermediateCerts(),
+				admins: fabricConfig.getAdmins(),
+				id: fabricConfig.getName(),
+				orgs : orgs,
+				cryptoSuite: cs
+			});
+			logger.debug('loadMSPs - found msp=',newMSP.getId());
+			//will eliminate duplicates
+			self._msps[fabricConfig.getName()] = newMSP;
+		});
+	}
+&nbsp;
+	/**
+	 * Create and add MSP instance to this manager according to configuration information
+	 * @param {Object} config A configuration object specific to the implementation. For this
+	 * implementation it uses the following fields:
+	 *		&lt;br&gt;`rootCerts`: array of {@link Identity} representing trust anchors for validating
+	 *           signing certificates. Required for MSPs used in verifying signatures
+	 *		&lt;br&gt;`intermediateCerts`: array of {@link Identity} representing trust anchors for validating
+	 *           signing certificates. optional for MSPs used in verifying signatures
+	 *		&lt;br&gt;`admins`: array of {@link Identity} representing admin privileges
+	 *		&lt;br&gt;`signer`: {@link SigningIdentity} signing identity. Required for MSPs used in signing
+	 *		&lt;br&gt;`id`: {string} value for the identifier of this instance
+	 *		&lt;br&gt;`orgs`: {string} array of organizational unit identifiers
+	 *		&lt;br&gt;`cryptoSuite': the underlying {@link module:api.CryptoSuite} for crypto primitive operations
+	 *@return {MSP} The newly created MSP instance
+	 */
+	addMSP<span class="fstat-no" title="function not covered" >(config) {</span>
+<span class="cstat-no" title="statement not covered" >		if(!config.cryptoSuite) <span class="cstat-no" title="statement not covered" >config.cryptoSuite = utils.newCryptoSuite();</span></span>
+<span class="cstat-no" title="statement not covered" >		var msp = new MSP(config);</span>
+<span class="cstat-no" title="statement not covered" >		logger.debug('addMSP - msp=',msp.getId());</span>
+<span class="cstat-no" title="statement not covered" >		this._msps[msp.getId()] = msp;</span>
+<span class="cstat-no" title="statement not covered" >		return msp;</span>
+	}
+&nbsp;
+	/**
+	 * Returns the validating MSPs. Note that this does NOT return the local MSP
+	 */
+	getMSPs() {
+		return this._msps;
+	}
+&nbsp;
+	/**
+	 * Returns a validating MSP
+	 */
+	getMSP(id) {
+		return this._msps[id];
+	}
+&nbsp;
+	/**
+	 * DeserializeIdentity deserializes an identity
+	 * @param {byte[]} serializedIdentity A protobuf-based serialization of an object with
+	 * two fields: mspid and idBytes for certificate PEM bytes
+	 * @returns {Promise} Promise for an {@link Identity} instance
+	 */
+	deserializeIdentity(serializedIdentity) {
+		var sid = identityProto.SerializedIdentity.decode(serializedIdentity);
+		var mspid = sid.getMspid();
+		var msp = this._msps[mspid];
+&nbsp;
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (!msp)
+<span class="cstat-no" title="statement not covered" >			throw new Error(util.format('Failed to locate an MSP instance matching the requested id "%s" in the deserialized identity', mspid));</span>
+&nbsp;
+		return msp.deserializeIdentity(serializedIdentity);
+	}
+};
+&nbsp;
+module.exports = MSPManager;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 06 2017 17:25:54 GMT+0530 (IST)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,2426 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for fabric-ca-client/lib/FabricCAClientImpl.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">fabric-ca-client/lib/</a> FabricCAClientImpl.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">92.92% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>223/240</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">92.06% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>116/126</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">89.36% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>42/47</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">92.92% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>223/240</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689
+690
+691
+692
+693
+694
+695
+696
+697
+698
+699
+700
+701
+702
+703
+704
+705
+706
+707
+708
+709
+710
+711
+712
+713
+714
+715
+716
+717
+718
+719
+720
+721
+722
+723
+724
+725
+726
+727
+728
+729
+730
+731
+732
+733
+734
+735
+736
+737
+738
+739
+740
+741
+742
+743
+744
+745
+746
+747
+748
+749
+750
+751
+752
+753
+754
+755
+756
+757
+758
+759
+760
+761
+762
+763
+764
+765
+766
+767
+768
+769
+770
+771
+772
+773
+774
+775
+776
+777
+778
+779
+780
+781
+782
+783
+784
+785
+786
+787
+788</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33×</span>
+<span class="cline-any cline-yes">33×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32×</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">31×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*
+ Copyright 2016 IBM All Rights Reserved.
+&nbsp;
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+&nbsp;
+	  http://www.apache.org/licenses/LICENSE-2.0
+&nbsp;
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
+&nbsp;
+'use strict';
+&nbsp;
+var api = require('./api.js');
+var utils = require('./utils.js');
+var BaseClient = require('./BaseClient.js');
+var util = require('util');
+var path = require('path');
+var http = require('http');
+var https = require('https');
+var urlParser = require('url');
+var x509 = require('x509');
+&nbsp;
+var logger = utils.getLogger('FabricCAClientImpl.js');
+&nbsp;
+/**
+ * @typedef {Object} TLSOptions
+ * @property {string[]} trustedRoots Array of PEM-encoded trusted root certificates
+ * @property {boolean} [verify=true] Determines whether or not to verify the server certificate when using TLS
+ */
+&nbsp;
+/**
+ * This is an implementation of the member service client which communicates with the Fabric CA server.
+ * @class
+ * @extends BaseClient
+ */
+var FabricCAServices = class extends BaseClient {
+&nbsp;
+	/**
+	 * constructor
+	 *
+	 * @param {string} url The endpoint URL for Fabric CA services of the form: "http://host:port" or "https://host:port"
+	 * @param {TLSOptions} tlsOptions The TLS settings to use when the Fabric CA services endpoint uses "https"
+	 * @param {string} caName The optional name of the CA. Fabric-ca servers support multiple Certificate Authorities from
+	 *  a single server. If omitted or null or an empty string, then the default CA is the target of requests
+	 * @param {CryptoSuite} cryptoSuite The optional cryptoSuite instance to be used if options other than defaults are needed.
+	 * If not specified, an instance of {@link CryptoSuite} will be constructed based on the current configuration settings:
+	 * &lt;br&gt; - crypto-hsm: use an implementation for Hardware Security Module (if set to true) or software-based key management (if set to false)
+	 * &lt;br&gt; - crypto-keysize: security level, or key size, to use with the digital signature public key algorithm. Currently ECDSA
+	 *  is supported and the valid key sizes are 256 and 384
+	 * &lt;br&gt; - crypto-hash-algo: hashing algorithm
+	 * &lt;br&gt; - key-value-store: some CryptoSuite implementation requires a key store to persist private keys. A {@link CryptoKeyStore}
+	 *  is provided for this purpose, which can be used on top of any implementation of the {@link KeyValueStore} interface,
+	 *  such as a file-based store or a database-based one. The specific implementation is determined by the value of this configuration setting.
+	 */
+	constructor(url, tlsOptions, caName, cryptoSuite) {
+		super();
+&nbsp;
+		var endpoint = FabricCAServices._parseURL(url);
+&nbsp;
+		if (!!cryptoSuite) {
+			this.setCryptoSuite(cryptoSuite);
+		} else {
+			this.setCryptoSuite(utils.newCryptoSuite());
+			this.getCryptoSuite().setCryptoKeyStore(utils.newCryptoKeyStore());
+		}
+&nbsp;
+		this._fabricCAClient = new FabricCAClient({
+			caname: caName,
+			protocol: endpoint.protocol,
+			hostname: endpoint.hostname,
+			port: endpoint.port,
+			tlsOptions: tlsOptions
+		}, this.getCryptoSuite());
+&nbsp;
+		logger.debug('Successfully constructed Fabric CA service client: endpoint - %j', endpoint);
+&nbsp;
+	}
+&nbsp;
+	/**
+	 * Register the member and return an enrollment secret.
+	 * @param {Object} req Registration request with the following fields:
+	 * &lt;br&gt; - enrollmentID {string}. ID which will be used for enrollment
+	 * &lt;br&gt; - enrollmentSecret {string}. Optional enrollment secret to set for the registered user.
+	 *   If not provided, the server will generate one.
+	 * &lt;br&gt; - role {string}. An arbitrary string representing a role value for the user
+	 * &lt;br&gt; - affiliation {string}. Affiliation with which this user will be associated, like a company or an organization
+	 * &lt;br&gt; - maxEnrollments {number}. The maximum number of times this user will be permitted to enroll
+	 * &lt;br&gt; - attrs {{@link KeyValueAttribute}[]}. Array of key/value attributes to assign to the user.
+	 * @param registrar {User}. The identity of the registrar (i.e. who is performing the registration)
+	 * @returns {Promise} The enrollment secret to use when this user enrolls
+	 */
+	register(req, registrar) {
+		if (typeof req === 'undefined' || req === null) {
+			throw new Error('Missing required argument "request"');
+		}
+&nbsp;
+		if (typeof req.enrollmentID === 'undefined' || req.enrollmentID === null) {
+			throw new Error('Missing required argument "request.enrollmentID"');
+		}
+&nbsp;
+		<span class="missing-if-branch" title="else path not taken" >E</span>if (typeof req.maxEnrollments === 'undefined' || req.maxEnrollments === null) {
+			// set maxEnrollments to 1
+			req.maxEnrollments = 1;
+		}
+&nbsp;
+		checkRegistrar(registrar);
+&nbsp;
+		return this._fabricCAClient.register(req.enrollmentID, req.enrollmentSecret, req.role, req.affiliation, req.maxEnrollments, req.attrs,
+			registrar.getSigningIdentity());
+	}
+&nbsp;
+	/**
+	 * Enroll the member and return an opaque member object.
+	 * @param req Enrollment request
+	 * @param {string} req.enrollmentID The registered ID to use for enrollment
+	 * @param {string} req.enrollmentSecret The secret associated with the enrollment ID
+	 * @returns Promise for an object with "key" for private key and "certificate" for the signed certificate
+	 */
+	enroll(req) {
+		var self = this;
+&nbsp;
+		return new Promise(function (resolve, reject) {
+			if (typeof req === 'undefined' || req === null) {
+				logger.error('enroll() missing required argument "request"');
+				return reject(new Error('Missing required argument "request"'));
+			}
+			if (!req.enrollmentID) {
+				logger.error('Invalid enroll request, missing enrollmentID');
+				return reject(new Error('req.enrollmentID is not set'));
+			}
+&nbsp;
+			if (!req.enrollmentSecret) {
+				logger.error('Invalid enroll request, missing enrollmentSecret');
+				return reject(new Error('req.enrollmentSecret is not set'));
+			}
+&nbsp;
+			var enrollmentID = req.enrollmentID;
+			var enrollmentSecret = req.enrollmentSecret;
+&nbsp;
+			//generate enrollment certificate pair for signing
+			var opts;
+			<span class="missing-if-branch" title="else path not taken" >E</span>if (self.getCryptoSuite()._cryptoKeyStore) {
+				opts = {ephemeral: false};
+			} else {
+<span class="cstat-no" title="statement not covered" >				opts = {ephemeral: true};</span>
+			}
+			self.getCryptoSuite().generateKey(opts)
+				.then(
+				function (privateKey) {
+					//generate CSR using enrollmentID for the subject
+					try {
+						var csr = privateKey.generateCSR('CN=' + req.enrollmentID);
+						self._fabricCAClient.enroll(req.enrollmentID, req.enrollmentSecret, csr)
+							.then(
+							function (enrollResponse) {
+								return resolve({
+									key: privateKey,
+									certificate: enrollResponse.enrollmentCert,
+									rootCertificate: enrollResponse.caCertChain
+								});
+							},
+<span class="fstat-no" title="function not covered" >							function (err) {</span>
+<span class="cstat-no" title="statement not covered" >								return reject(err);</span>
+							}
+							);
+&nbsp;
+					} catch (err) {
+<span class="cstat-no" title="statement not covered" >						return reject(new Error(util.format('Failed to generate CSR for enrollmemnt due to error [%s]', err)));</span>
+					}
+				},
+<span class="fstat-no" title="function not covered" >				function (err) {</span>
+<span class="cstat-no" title="statement not covered" >					return reject(new Error(util.format('Failed to generate key for enrollment due to error [%s]', err)));</span>
+				}
+				);
+&nbsp;
+		});
+	}
+&nbsp;
+	/**
+	 * Re-enroll the member in cases such as the existing enrollment certificate is about to expire, or
+	 * it has been compromised
+	 * @param {User} currentUser The identity of the current user that holds the existing enrollment certificate
+	 * @returns Promise for an object with "key" for private key and "certificate" for the signed certificate
+	 */
+	reenroll(currentUser) {
+		if (!currentUser) {
+			logger.error('Invalid re-enroll request, missing argument "currentUser"');
+			throw new Error('Invalid re-enroll request, missing argument "currentUser"');
+		}
+&nbsp;
+		if (typeof currentUser.getIdentity !== 'function') {
+			logger.error('Invalid re-enroll request, "currentUser" is not a valid User object, missing "getIdentity()" method');
+			throw new Error('Invalid re-enroll request, "currentUser" is not a valid User object, missing "getIdentity()" method');
+		}
+&nbsp;
+		if (typeof currentUser.getSigningIdentity !== 'function') {
+			logger.error('Invalid re-enroll request, "currentUser" is not a valid User object, missing "getSigningIdentity()" method');
+			throw new Error('Invalid re-enroll request, "currentUser" is not a valid User object, missing "getSigningIdentity()" method');
+		}
+&nbsp;
+		var cert = currentUser.getIdentity()._certificate;
+		var subject;
+		try {
+			subject = x509.getSubject(FabricCAServices.normalizeX509(cert));
+		} catch(err) {
+<span class="cstat-no" title="statement not covered" >			logger.error(util.format('Failed to parse enrollment certificate %s for Subject. \nError: %s', cert, err));</span>
+		}
+&nbsp;
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (subject === null || subject === {})
+<span class="cstat-no" title="statement not covered" >			throw new Error('Failed to parse the enrollment certificate of the current user for its subject');</span>
+&nbsp;
+		if (!subject.commonName)
+			throw new Error('Invalid enrollment certificate of the current user: does not contain the "CN" value');
+&nbsp;
+		var self = this;
+&nbsp;
+		return new Promise(function (resolve, reject) {
+			//generate enrollment certificate pair for signing
+			self.getCryptoSuite().generateKey()
+				.then(
+				function (privateKey) {
+					//generate CSR using the subject of the current user's certificate
+					try {
+						var csr = privateKey.generateCSR('CN=' + subject.commonName);
+						self._fabricCAClient.reenroll(csr, currentUser.getSigningIdentity())
+							.then(
+							function (response) {
+								return resolve({
+									key: privateKey,
+									certificate: Buffer.from(response.result.Cert, 'base64').toString(),
+									rootCertificate: Buffer.from(response.result.ServerInfo.CAChain, 'base64').toString()
+								});
+							},
+							function (err) {
+								return reject(err);
+							}
+							);
+&nbsp;
+					} catch (err) {
+<span class="cstat-no" title="statement not covered" >						return reject(new Error(util.format('Failed to generate CSR for enrollmemnt due to error [%s]', err)));</span>
+					}
+				},
+<span class="fstat-no" title="function not covered" >				function (err) {</span>
+<span class="cstat-no" title="statement not covered" >					return reject(new Error(util.format('Failed to generate key for enrollment due to error [%s]', err)));</span>
+				}
+				);
+&nbsp;
+		});
+	}
+&nbsp;
+	/**
+	 * Revoke an existing certificate (enrollment certificate or transaction certificate), or revoke
+	 * all certificates issued to an enrollment id. If revoking a particular certificate, then both
+	 * the Authority Key Identifier and serial number are required. If revoking by enrollment id,
+	 * then all future requests to enroll this id will be rejected.
+	 * @param {Object} request Request object with the following fields:
+	 * &lt;br&gt; - enrollmentID {string}. ID to revoke
+	 * &lt;br&gt; - aki {string}. Authority Key Identifier string, hex encoded, for the specific certificate to revoke
+	 * &lt;br&gt; - serial {string}. Serial number string, hex encoded, for the specific certificate to revoke
+	 * &lt;br&gt; - reason {string}. The reason for revocation. See https://godoc.org/golang.org/x/crypto/ocsp
+	 *  for valid values. The default value is 0 (ocsp.Unspecified).
+	 * @param {User} registrar The identity of the registrar (i.e. who is performing the revocation)
+	 * @returns {Promise} The revocation results
+	 */
+	revoke(request, registrar) {
+		if (typeof request === 'undefined' || request === null) {
+			throw new Error('Missing required argument "request"');
+		}
+&nbsp;
+		if (request.enrollmentID === null || request.enrollmentID === '') {
+			if (request.aki === null || request.aki === '' || request.serial === null || request.serial === '') {
+				throw new Error('Enrollment ID is empty, thus both "aki" and "serial" must have non-empty values');
+			}
+		}
+&nbsp;
+		checkRegistrar(registrar);
+&nbsp;
+		return this._fabricCAClient.revoke(
+			request.enrollmentID,
+			request.aki,
+			request.serial,
+			(request.reason) ? <span class="branch-0 cbranch-no" title="branch not covered" >request.reason </span>: null,
+			registrar.getSigningIdentity());
+	}
+&nbsp;
+	/**
+	 * @typedef {Object} HTTPEndpoint
+	 * @property {string} hostname
+	 * @property {number} port
+	 * @property {string} protocol
+	 */
+&nbsp;
+	/**
+	 * Utility function which parses an HTTP URL into its component parts
+	 * @param {string} url HTTP or HTTPS url including protocol, host and port
+	 * @returns {HTTPEndpoint}
+	 * @throws InvalidURL for malformed URLs
+	 * @ignore
+	 */
+	static _parseURL(url) {
+&nbsp;
+		var endpoint = {};
+&nbsp;
+		var purl = urlParser.parse(url, true);
+&nbsp;
+		if (purl.protocol &amp;&amp; purl.protocol.startsWith('http')) {
+			if (purl.protocol.slice(0, -1) != 'https') {
+				if (purl.protocol.slice(0, -1) != 'http') {
+					throw new Error('InvalidURL: url must start with http or https.');
+				}
+			}
+			endpoint.protocol = purl.protocol.slice(0, -1);
+			if (purl.hostname) {
+				endpoint.hostname = purl.hostname;
+&nbsp;
+				if (purl.port) {
+					endpoint.port = parseInt(purl.port);
+				}
+&nbsp;
+			} else {
+				throw new Error('InvalidURL: missing hostname.');
+			}
+&nbsp;
+		} else {
+			throw new Error('InvalidURL: url must start with http or https.');
+		}
+&nbsp;
+		return endpoint;
+	}
+&nbsp;
+	/**
+	* return a printable representation of this object
+	*/
+	toString() {
+		return ' FabricCAServices : {' +
+			'hostname: ' + this._fabricCAClient._hostname +
+			', port: ' + this._fabricCAClient._port +
+			'}';
+	}
+&nbsp;
+	/**
+	 * Make sure there's a start line with '-----BEGIN CERTIFICATE-----'
+	 * and end line with '-----END CERTIFICATE-----', so as to be compliant
+	 * with x509 parsers
+	 */
+	static normalizeX509(raw) {
+		var regex = /(\-\-\-\-\-\s*BEGIN ?[^-]+?\-\-\-\-\-)([\s\S]*)(\-\-\-\-\-\s*END ?[^-]+?\-\-\-\-\-)/;
+		var matches = raw.match(regex);
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (matches.length !== 4) {
+<span class="cstat-no" title="statement not covered" >			throw new Error('Failed to find start line or end line of the certificate.');</span>
+		}
+&nbsp;
+		// remove the first element that is the whole match
+		matches.shift();
+		// remove LF or CR
+		matches = matches.map((element) =&gt; {
+			return element.trim();
+		});
+&nbsp;
+		// make sure '-----BEGIN CERTIFICATE-----' and '-----END CERTIFICATE-----' are in their own lines
+		return matches.join('\n');
+	}
+};
+&nbsp;
+/**
+ * Client for communciating with the Fabric CA APIs
+ *
+ * @class
+ */
+var FabricCAClient = class {
+&nbsp;
+	/**
+	 * constructor
+	 *
+	 * @param {object} connect_opts Connection options for communciating with the Fabric CA server
+	 * @param {string} connect_opts.protocol The protocol to use (either HTTP or HTTPS)
+	 * @param {string} connect_opts.hostname The hostname of the Fabric CA server endpoint
+	 * @param {number} connect_opts.port The port of the Fabric CA server endpoint
+	 * @param {TLSOptions} connect_opts.tlsOptions The TLS settings to use when the Fabric CA endpoint uses "https"
+	 * @param {string} connect_opts.caname The optional name of the CA. Fabric-ca servers support multiple Certificate Authorities from
+	 *  a single server. If omitted or null or an empty string, then the default CA is the target of requests
+	 * @throws Will throw an error if connection options are missing or invalid
+	 *
+	 */
+	constructor(connect_opts, cryptoPrimitives) {
+&nbsp;
+		//check connect_opts
+		try {
+			this._validateConnectionOpts(connect_opts);
+		} catch (err) {
+			throw new Error('Invalid connection options.  ' + err.message);
+		}
+&nbsp;
+		this._caName = connect_opts.caname,
+		this._httpClient = (connect_opts.protocol === 'http') ? http : https;
+		this._hostname = connect_opts.hostname;
+		if (connect_opts.port) {
+			this._port = connect_opts.port;
+		} else {
+			this._port = 7054;
+		}
+		if (typeof connect_opts.tlsOptions==='undefined' || connect_opts.tlsOptions===null){
+			this._tlsOptions = {
+				trustedRoots: [],
+				verify: false
+			};
+		} else {
+			this._tlsOptions = connect_opts.tlsOptions;
+			if (typeof this._tlsOptions.verify === 'undefined') {
+				this._tlsOptions.verify = true;
+			}
+			if (typeof this._tlsOptions.trustedRoots === 'undefined') {
+				this._tlsOptions.trustedRoots = [];
+			}
+		}
+		this._baseAPI = '/api/v1/';
+&nbsp;
+		this._cryptoPrimitives = cryptoPrimitives;
+&nbsp;
+		logger.debug('Successfully constructed Fabric CA client from options - %j', connect_opts);
+	}
+&nbsp;
+	/**
+	 * @typedef {Object} KeyValueAttribute
+	 * @property {string} name The key used to reference the attribute
+	 * @property {string} value The value of the attribute
+	 */
+&nbsp;
+	/**
+	 * Register a new user and return the enrollment secret
+	 * @param {string} enrollmentID ID which will be used for enrollment
+	 * @param {string} enrollmentSecret Optional enrollment secret to set for the registered user.
+	 *   If not provided, the server will generate one.
+	 * @param {string} role Type of role for this user
+	 * @param {string} affiliation Affiliation with which this user will be associated
+	 * @param {number} maxEnrollments The maximum number of times the user is permitted to enroll
+	 * @param {KeyValueAttribute[]} attrs Array of key/value attributes to assign to the user
+	 * @param {SigningIdentity} signingIdentity The instance of a SigningIdentity encapsulating the
+	 * signing certificate, hash algorithm and signature algorithm
+	 * @returns {Promise} The enrollment secret to use when this user enrolls
+	 */
+	register(enrollmentID, enrollmentSecret, role, affiliation, maxEnrollments, attrs, signingIdentity) {
+&nbsp;
+		var self = this;
+		var numArgs = arguments.length;
+		//all arguments are required
+		if (numArgs &lt; 6) {
+			throw new Error('Missing required parameters.  \'enrollmentID\', \'role\', \'affiliation\', \'attrs\', \
+				and \'signingIdentity\' are all required.');
+		}
+&nbsp;
+		return new Promise(function (resolve, reject) {
+			var regRequest = {
+				'id': enrollmentID,
+				'type': role ? role : 'client',
+				'affiliation': affiliation,
+				'max_enrollments': maxEnrollments,
+				'attrs': attrs
+			};
+&nbsp;
+			if (typeof enrollmentSecret === 'string' &amp;&amp; enrollmentSecret !== '') {
+				regRequest.secret = enrollmentSecret;
+			}
+&nbsp;
+			return self.post('register', regRequest, signingIdentity)
+			.then(function (response) {
+				return resolve(response.result.secret);
+			}).catch(function (err) {
+				return reject(err);
+			});
+		});
+	}
+&nbsp;
+	/**
+	 * Revoke an existing certificate (enrollment certificate or transaction certificate), or revoke
+	 * all certificates issued to an enrollment id. If revoking a particular certificate, then both
+	 * the Authority Key Identifier and serial number are required. If revoking by enrollment id,
+	 * then all future requests to enroll this id will be rejected.
+	 * @param {string} enrollmentID ID to revoke
+	 * @param {string} aki Authority Key Identifier string, hex encoded, for the specific certificate to revoke
+	 * @param {string} serial Serial number string, hex encoded, for the specific certificate to revoke
+	 * @param {string} reason The reason for revocation. See https://godoc.org/golang.org/x/crypto/ocsp
+	 *  for valid values
+	 * @param {SigningIdentity} signingIdentity The instance of a SigningIdentity encapsulating the
+	 * signing certificate, hash algorithm and signature algorithm
+	 * @returns {Promise} The revocation results
+	 */
+	revoke(enrollmentID, aki, serial, reason, signingIdentity) {
+&nbsp;
+		var self = this;
+		var numArgs = arguments.length;
+&nbsp;
+		//all arguments are required
+		if (numArgs &lt; 5) {
+			throw new Error('Missing required parameters.  \'enrollmentID\', \'aki\', \'serial\', \'reason\', \
+				\'callerID\' and \'signingIdentity\' are all required.');
+		}
+&nbsp;
+		return new Promise(function (resolve, reject) {
+&nbsp;
+			var regRequest = {
+				'id': enrollmentID,
+				'aki': aki,
+				'serial': serial,
+				'reason': reason
+			};
+&nbsp;
+			return self.post('revoke', regRequest, signingIdentity)
+			.then(function (response) {
+				return resolve(response);
+			}).catch(function (err) {
+				return reject(err);
+			});
+		});
+	}
+&nbsp;
+	/**
+	 * Re-enroll an existing user.
+	 * @param {string} csr PEM-encoded PKCS#10 certificate signing request
+	 * @param {SigningIdentity} signingIdentity The instance of a SigningIdentity encapsulating the
+	 * @returns {Promise} {@link EnrollmentResponse}
+	 */
+	reenroll(csr, signingIdentity) {
+&nbsp;
+		var self = this;
+		var numArgs = arguments.length;
+&nbsp;
+		//all arguments are required
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (numArgs &lt; 2) {
+<span class="cstat-no" title="statement not covered" >			throw new Error('Missing required parameters.  \'csr\', \'signingIdentity\' are all required.');</span>
+		}
+&nbsp;
+		return new Promise(function (resolve, reject) {
+&nbsp;
+			var request = {
+				certificate_request: csr
+			};
+&nbsp;
+			return self.post('reenroll', request, signingIdentity)
+			.then(function (response) {
+				return resolve(response);
+			}).catch(function (err) {
+				return reject(err);
+			});
+		});
+	}
+&nbsp;
+	post(api_method, requestObj, signingIdentity) {
+		requestObj.caName = this._caName;
+&nbsp;
+		var self = this;
+		return new Promise(function (resolve, reject) {
+			var requestOptions = {
+				hostname: self._hostname,
+				port: self._port,
+				path: self._baseAPI + api_method,
+				method: 'POST',
+				headers: {
+					Authorization: self.generateAuthToken(requestObj, signingIdentity)
+				},
+				ca: self._tlsOptions.trustedRoots,
+				rejectUnauthorized: self._tlsOptions.verify
+			};
+&nbsp;
+			var request = self._httpClient.request(requestOptions, function (response) {
+&nbsp;
+				const responseBody = [];
+				response.on('data', function (chunk) {
+					responseBody.push(chunk);
+				});
+&nbsp;
+				response.on('end', function () {
+&nbsp;
+					var payload = responseBody.join('');
+&nbsp;
+					<span class="missing-if-branch" title="if path not taken" >I</span>if (!payload) {
+<span class="cstat-no" title="statement not covered" >						reject(new Error(</span>
+							util.format('fabric-ca request %s failed with HTTP status code %s', api_method, response.statusCode)));
+					}
+					//response should be JSON
+					var responseObj;
+					try {
+						responseObj = JSON.parse(payload);
+						if (responseObj.success) {
+							return resolve(responseObj);
+						} else {
+							return reject(new Error(
+								util.format('fabric-ca request %s failed with errors [%s]', api_method, JSON.stringify(responseObj &amp;&amp; responseObj.errors ? responseObj.errors : <span class="branch-1 cbranch-no" title="branch not covered" >responseObj)</span>)));
+						}
+&nbsp;
+					} catch (err) {
+<span class="cstat-no" title="statement not covered" >						reject(new Error(</span>
+							util.format('Could not parse %s response [%s] as JSON due to error [%s]', api_method, payload, err)));
+					}
+				});
+&nbsp;
+			});
+&nbsp;
+			request.on('error', <span class="fstat-no" title="function not covered" >function (err) {</span>
+<span class="cstat-no" title="statement not covered" >				reject(new Error(util.format('Calling %s endpoint failed with error [%s]', api_method, err)));</span>
+			});
+&nbsp;
+			request.write(JSON.stringify(requestObj));
+			request.end();
+		});
+	}
+&nbsp;
+	/*
+	 * Generate authorization token required for accessing fabric-ca APIs
+	 */
+	generateAuthToken(reqBody, signingIdentity) {
+		// specific signing procedure is according to:
+		// https://github.com/hyperledger/fabric-ca/blob/master/util/util.go#L213
+		var cert = Buffer.from(signingIdentity._certificate).toString('base64');
+		var body = Buffer.from(JSON.stringify(reqBody)).toString('base64');
+&nbsp;
+		var bodyAndcert = body + '.' + cert;
+		var sig = signingIdentity.sign(bodyAndcert, { hashFunction: this._cryptoPrimitives.hash.bind(this._cryptoPrimitives) });
+		logger.debug(util.format('bodyAndcert: %s', bodyAndcert));
+&nbsp;
+		var b64Sign = Buffer.from(sig, 'hex').toString('base64');
+		return cert + '.' + b64Sign;
+	}
+&nbsp;
+	/**
+	 * @typedef {Object} EnrollmentResponse
+	 * @property {string} enrollmentCert PEM-encoded X509 enrollment certificate
+	 * @property {string} caCertChain PEM-encoded X509 certificate chain for the issuing
+	 * certificate authority
+	 */
+&nbsp;
+	/**
+	 * Enroll a registered user in order to receive a signed X509 certificate
+	 * @param {string} enrollmentID The registered ID to use for enrollment
+	 * @param {string} enrollmentSecret The secret associated with the enrollment ID
+	 * @param {string} csr PEM-encoded PKCS#10 certificate signing request
+	 * @returns {Promise} {@link EnrollmentResponse}
+	 * @throws Will throw an error if all parameters are not provided
+	 * @throws Will throw an error if calling the enroll API fails for any reason
+	 */
+	enroll(enrollmentID, enrollmentSecret, csr) {
+&nbsp;
+		var self = this;
+		var numArgs = arguments.length;
+&nbsp;
+		return new Promise(function (resolve, reject) {
+			//check for required args
+			if (numArgs &lt; 3) {
+				return reject(new Error('Missing required parameters.  \'enrollmentID\', \'enrollmentSecret\' and \'csr\' are all required.'));
+			}
+&nbsp;
+			var requestOptions = {
+				hostname: self._hostname,
+				port: self._port,
+				path: self._baseAPI + 'enroll',
+				method: 'POST',
+				auth: enrollmentID + ':' + enrollmentSecret,
+				ca: self._tlsOptions.trustedRoots,
+				rejectUnauthorized: self._tlsOptions.verify
+			};
+&nbsp;
+			var enrollRequest = {
+				caName: self._caName,
+				certificate_request: csr
+			};
+&nbsp;
+			var request = self._httpClient.request(requestOptions, function (response) {
+&nbsp;
+				const responseBody = [];
+				response.on('data', function (chunk) {
+					responseBody.push(chunk);
+				});
+&nbsp;
+				response.on('end', function () {
+&nbsp;
+					var payload = responseBody.join('');
+&nbsp;
+					<span class="missing-if-branch" title="if path not taken" >I</span>if (!payload) {
+<span class="cstat-no" title="statement not covered" >						reject(new Error(</span>
+							util.format('Enrollment failed with HTTP status code ', response.statusCode)));
+					}
+					//response should be JSON
+					try {
+						var res = JSON.parse(payload);
+						<span class="missing-if-branch" title="else path not taken" >E</span>if (res.success) {
+							//we want the result field which is Base64-encoded PEM
+							var enrollResponse = new Object();
+							// Cert field is Base64-encoded PEM
+							enrollResponse.enrollmentCert = Buffer.from(res.result.Cert, 'base64').toString();
+							enrollResponse.caCertChain = Buffer.from(res.result.ServerInfo.CAChain, 'base64').toString();
+							return resolve(enrollResponse);
+						} else {
+<span class="cstat-no" title="statement not covered" >							return reject(new Error(</span>
+								util.format('Enrollment failed with errors [%s]', JSON.stringify(res.errors))));
+						}
+&nbsp;
+					} catch (err) {
+<span class="cstat-no" title="statement not covered" >						reject(new Error(</span>
+							util.format('Could not parse enrollment response [%s] as JSON due to error [%s]', payload, err)));
+					}
+				});
+&nbsp;
+			});
+&nbsp;
+			request.on('error', <span class="fstat-no" title="function not covered" >function (err) {</span>
+<span class="cstat-no" title="statement not covered" >				reject(new Error(util.format('Calling enrollment endpoint failed with error [%s]', err)));</span>
+			});
+&nbsp;
+			request.write(JSON.stringify(enrollRequest));
+			request.end();
+&nbsp;
+		});
+&nbsp;
+	}
+&nbsp;
+	/**
+	 * Convert a PEM encoded certificate to DER format
+	 * @param {string) pem PEM encoded public or private key
+	 * @returns {string} hex Hex-encoded DER bytes
+	 * @throws Will throw an error if the conversation fails
+	 */
+	static pemToDER(pem) {
+&nbsp;
+		//PEM format is essentially a nicely formatted base64 representation of DER encoding
+		//So we need to strip "BEGIN" / "END" header/footer and string line breaks
+		//Then we simply base64 decode it and convert to hex string
+		var contents = pem.toString().trim().split(/\r?\n/);
+		//check for BEGIN and END tags
+		if (!(contents[0].match(/\-\-\-\-\-\s*BEGIN ?([^-]+)?\-\-\-\-\-/) &amp;&amp;
+			contents[contents.length - 1].match(/\-\-\-\-\-\s*END ?([^-]+)?\-\-\-\-\-/))) {
+			throw new Error('Input parameter does not appear to be PEM-encoded.');
+		};
+		contents.shift(); //remove BEGIN
+		contents.pop(); //remove END
+		//base64 decode and encode as hex string
+		var hex = Buffer.from(contents.join(''), 'base64').toString('hex');
+		return hex;
+	}
+&nbsp;
+	/**
+	 * Validate the connection options
+	 * @throws Will throw an error if any of the required connection options are missing or invalid
+	 * @ignore
+	 */
+	_validateConnectionOpts(connect_opts) {
+		//check for protocol
+		if (!connect_opts.protocol) {
+			throw new Error('Protocol must be set to \'http\' or \'https\'');
+		};
+&nbsp;
+		if (connect_opts.protocol != 'http') {
+			if (connect_opts.protocol != 'https') {
+				throw new Error('Protocol must be set to \'http\' or \'https\'');
+			}
+		};
+&nbsp;
+		if (!connect_opts.hostname) {
+			throw new Error('Hostname must be set');
+		};
+&nbsp;
+		if (connect_opts.port) {
+			if (!Number.isInteger(connect_opts.port)) {
+				throw new Error('Port must be an integer');
+			}
+		}
+&nbsp;
+	}
+};
+&nbsp;
+function checkRegistrar(registrar) {
+	if (typeof registrar === 'undefined' || registrar === null) {
+		throw new Error('Missing required argument "registrar"');
+	}
+&nbsp;
+	if (typeof registrar.getSigningIdentity !== 'function') {
+		throw new Error('Argument "registrar" must be an instance of the class "User", but is found to be missing a method "getSigningIdentity()"');
+	}
+}
+&nbsp;
+module.exports = FabricCAServices;
+module.exports.FabricCAClient = FabricCAClient;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 06 2017 17:25:54 GMT+0530 (IST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
